@@ -1,0 +1,296 @@
+.div_main_outer_container {
+  width: 75%;
+  background-color: #fff;
+  padding: 1rem 4rem;
+  margin: 0px auto;
+}
+.main_blog_outer_section {
+  text-align: justify;
+}
+.blog_editable:nth-child(1) {
+  width: 100%;
+}
+.blog_editable .image_upload {
+  height: 25rem;
+  width: 100%;
+  margin-bottom: 3%;
+}
+.blog_editable .image_upload img {
+  width: 100%;
+  height: 100%;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+.blog_editable h1 {
+  margin-top: 11px;
+  padding-bottom: 2%;
+  text-transform: capitalize;
+  line-height: normal;
+  color: #363636;
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  line-height: normal;
+}
+.blog_editable :is(h2, h3, h4, h5, h5) {
+  margin: 15px auto 7px auto;
+  color: #363636;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  font-family: 'Poppins', sans-serif;
+}
+.blog_editable h3 {
+  font-size: 1.2rem;
+}
+.blog_editable h4 {
+  font-size: 1rem;
+}
+.blog_editable h5 {
+  font-size: 0.9rem;
+}
+
+.blog_editable :is(h2, h3, h4, h5, h6) > div {
+  font-family: 'Poppins', sans-serif;
+  text-align: initial;
+  font-size: 0.9rem;
+}
+
+.blog_editable li {
+  /* padding-left: 7%; */
+  /* font-family: Outfit; */
+  margin: 5px;
+  color: #3b3b3e;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
+  line-height: 22px;
+}
+.blog_editable .blog_para {
+  letter-spacing: 0.003rem;
+  text-align: justify;
+  width: 100%;
+  color: #3b3b3e;
+  font-size: 0.9rem;
+  font-style: normal;
+  /*font-family: 'Poppins', sans-serif;*/
+  font-family: "Readex Pro", sans-serif;
+  font-weight: 400;
+}
+.blog_editable b {
+  color: #363636;
+  font-family: 'Poppins', sans-serif;
+}
+.blog_editable i {
+  font-family: 'Poppins', sans-serif;
+}
+.blog_editable div {
+  font-family: 'Poppins', sans-serif;
+  font-family: "Readex Pro", sans-serif;
+}
+
+.dynamic_blog_image_div {
+  width: 95%;
+  height: 15rem;
+  margin-inline: auto;
+  margin-bottom: 9%;
+}
+.dynamic_blog_image_div img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.dynamic_blog_image_div .img_description {
+  text-align: center;
+  font-size: 0.8rem;
+  font-family: 'Poppins', sans-serif;
+  color: #7b7f84;
+}
+
+.blog-date-section {
+  /* width: 75%;
+    margin-inline: auto; */
+}
+.blog-date {
+  color: #cbd5e0;
+  width: 100%;
+  margin-inline: auto;
+  margin-top: 1.5rem;
+  font-size: 1rem;
+
+  color: #6d6e76;
+
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* blog share button */
+.share_blog_btn {
+  width: fit-content;
+  position: fixed;
+  right: 8%;
+  top: 10%;
+  box-shadow: 0px 0px 10px 0px gainsboro;
+  z-index: 80;
+  background-color: #ffff;
+  border-radius: 4px;
+}
+
+.share_blog_btn .svg_section {
+  /* border: 1px solid green; */
+  padding: 4px;
+  display: grid;
+
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  margin-top: 6px;
+  background: transparent;
+  border: none;
+  width: 100%;
+}
+
+.share_blog_btn .share_btn {
+  background: linear-gradient(
+    141.98deg,
+    rgb(20, 108, 197) 24.73%,
+    rgb(0, 78, 158) 89.09%
+  );
+  color: #fff;
+  border-radius: 4px 4px 0px 0px;
+  margin-top: 0px;
+}
+
+.share_blog_btn .share_btn svg {
+  height: 32px;
+  width: 32px;
+  fill: #fff;
+}
+
+.share_blog_btn .whatsapp_share {
+  display: none;
+}
+.breadcurms {
+  display: flex;
+  align-items: center;
+  /* margin-top: 1rem; */
+}
+.breadcurms a {
+  text-decoration: none;
+  color: #363636;
+}
+.breadcurms svg {
+  height: 20px;
+  width: 20px;
+  fill: #363636;
+}
+
+.breadcurms .breadcurms_pera {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #6c6d72;
+  text-transform: capitalize;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.related_blogs_section_blog {
+  display: flex;
+  align-items: center;
+}
+.related_blogs_section_blog .blog_inner_wrapper_realated_blogs {
+  width: 85%;
+  margin-inline: auto;
+}
+.related_blogs_section_blog_btn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.related_blogs_section_blog_btn svg {
+  height: 48px;
+  width: 30px;
+}
+.blog_editable a {
+  text-decoration: none !important;
+}
+@media (max-width: 990px) {
+  .blog_editable .image_upload {
+    height: 10rem;
+  }
+  .main_blog_outer_section {
+    width: 100%;
+  }
+  .blog-date-section {
+    width: 93%;
+  }
+}
+@media (max-width: 650px) {
+  .share_blog_btn .whatsapp_share {
+    display: block;
+  }
+  .blog_editable .blog_para {
+    font-size: 14px;
+    line-height: 21px;
+    text-align: justify;
+  }
+
+  .dynamic_blog_image_div {
+    height: 8rem;
+  }
+  .blog_editable h1 {
+    text-align: start;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.2rem;
+  }
+  .blog_editable :is(h2, h3, h4, h5, h6) {
+    text-align: start;
+    font-size: 1rem;
+    margin: 0.6rem auto;
+    line-height: 20px;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .share_blog_btn {
+    bottom: 26%;
+    max-height: 400px;
+    overflow: auto;
+    transition: all 0.6s;
+    right: 1px;
+    top: auto;
+  }
+
+  .share_blog_btn .share_btn > p {
+    display: none;
+  }
+
+  .div_main_outer_container {
+    width: 90%;
+    padding: 1rem 1.3rem;
+  }
+
+  .related_blogs_section_blog .blog_inner_wrapper_realated_blogs {
+    width: 100%;
+  }
+  .related_blogs_section_blog_btn {
+    display: none;
+  }
+
+  .share_blog_btn .share_btn svg {
+    height: 25px;
+    width: 25px;
+    fill: #fff;
+  }
+}

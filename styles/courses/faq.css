@@ -1,0 +1,198 @@
+.faq-section {
+  width: 100%;
+  background: #fff;
+  margin-top: 2rem;
+}
+
+.faq_role_container {
+}
+
+.faq_role_inner_container {
+  display: flex;
+  justify-content: center;
+}
+
+.faq_role_accordian {
+  width: 61%;
+  min-width: 324px;
+  padding-bottom: 1rem;
+}
+
+.faq_role_title {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.faq_rol_img {
+  width: 254px;
+}
+
+.faq_title_img {
+  width: 100%;
+  height: 100%;
+}
+
+.accordian_header_container_faq {
+  width: 100%;
+
+  margin-bottom: 1rem;
+  position: relative;
+
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.accordian_btn_faq {
+  display: flex;
+  border-bottom: 1px solid rgba(155, 146, 146, 0.6);
+}
+
+.faq_title {
+  margin: 2rem 6px;
+}
+
+.faq_title_heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #363636;
+  border-bottom: 5px solid #ffd23f;
+  padding-bottom: 0.2rem;
+}
+
+.accordion_faq {
+  width: 100%;
+}
+
+.accordion_item_faq {
+  background: #ffffff;
+
+  margin-bottom: 0.8rem;
+  padding: 10px 4px;
+  border-bottom: 1px solid rgba(172, 171, 171, 0.6);
+}
+
+.accordion_title_faq {
+  color: #363636;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.content_accordion_faq {
+  color: #363636;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+}
+
+.content_description_faq {
+  margin: 0.5rem 0;
+  font-size: 13px;
+  padding-left: 1.2%;
+}
+
+.content_accordion_faq .show {
+  height: auto;
+  max-height: 990px;
+  /* max-height: fit-content; */
+  transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+}
+
+.accordion_heading_faq {
+  display: flex;
+  /* align-items: center; */
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.accordion_heading_faq span:nth-child(1) {
+  margin-right: 6px;
+}
+
+.show_content_accordion_faq {
+  max-height: 990px;
+  transition: all 0.5s ease;
+}
+
+@media (max-width: 810px) {
+  .faq_role_accordian {
+    width: 95%;
+  }
+
+  .faq_title_heading {
+    font-size: 20px;
+  }
+
+  .accordion_item_faq {
+    padding: 8px 4px;
+  }
+}
+
+@media (max-width: 768px) {
+  .faq_title_heading {
+    font-size: 1.2rem;
+    /* border-bottom: px solid #ffd23f; */
+    padding-bottom: 0.1em;
+  }
+
+  .accordion_faq {
+    padding: 8px;
+  }
+
+  .faq_role_accordian {
+    padding-bottom: 0;
+    margin-top: 1.5rem;
+  }
+
+  .faq_title {
+    margin: 1.5rem 14px;
+  }
+
+  .content_description_faq {
+    opacity: 0.9;
+    /* padding: 0px 0.3rem; */
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .faq_title_heading {
+    font-size: 1.2rem;
+  }
+
+  .content_description_faq {
+    padding-left: 4%;
+  }
+
+  .faq_role_accordian {
+    margin-top: 0;
+  }
+}
+
+/* shadcn Accordion states (replaces the old show_content_accordion_faq toggling) */
+button.accordion_title_faq {
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+}
+.content_accordion_faq[data-open] {
+  max-height: 990px;
+}
+.faq_icon_cancel {
+  display: none;
+}
+.accordion_title_faq[data-panel-open] .faq_icon_plus {
+  display: none;
+}
+.accordion_title_faq[data-panel-open] .faq_icon_cancel {
+  display: inline;
+}
+
+/* keep closed panels in the layout (zero height) exactly like the original markup */
+.content_accordion_faq[hidden] {
+  display: block;
+}

@@ -1,0 +1,67 @@
+.about-us-main-section {
+  background: #e8f4ff;
+  height: auto;
+  padding: 2rem 3rem;
+}
+
+.about-course-heading {
+  margin-bottom: 1.5rem;
+}
+
+.about-course-heading h2 {
+  color: #000;
+  font-family: "Outfit";
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.about-course-desc {
+  width: 90%;
+  margin: auto;
+  text-align: justify;
+  height: auto;
+}
+
+.course-desc__title {
+  color: #1e1d1f;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.course-desc__info {
+  color: #433e3d;
+  font-size: 0.9rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  line-height: 19px;
+  text-align: justify;
+}
+@media screen and (max-width: 1000px) {
+  .about-course-heading h1 {
+    font-size: 1.5rem;
+  }
+  .course-desc__info {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+  .course-desc__title {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 600px) {
+  .about-course-heading h1 {
+    font-size: 1.2rem;
+  }
+  .course-desc__title {
+    line-height: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+  .about-course-desc {
+    width: 100%;
+  }
+  .about-us-main-section {
+    padding: 2rem 2rem;
+  }
+}

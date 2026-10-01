@@ -1,0 +1,517 @@
+.main-popup {
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.456);
+  transform: translateY(500%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 98;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.outer-popup {
+  width: 25%;
+  min-width: 23rem;
+  margin: 0px auto;
+  background-color: white;
+  border-radius: 10px;
+  padding: 1rem 0.5rem;
+  box-shadow: 0px 0px 5px gray;
+  height: fit-content;
+}
+
+.cross-popup {
+  width: 100%;
+  text-align: right;
+  margin: -6px;
+}
+
+.cross-popup-span {
+  padding-right: 0rem;
+  cursor: pointer;
+}
+
+.popup-heading {
+  margin-top: 0.5rem;
+  color: #323232;
+  font-family: Readex pro;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+  text-align: center;
+  font-weight: 100;
+}
+
+.popup-heading > span {
+  font-weight: 600;
+  color: #03a84e;
+  text-transform: uppercase;
+}
+
+.popup-btn {
+  font-size: 0.9rem;
+  color: white;
+  display: none;
+  background-color: rgb(27, 27, 95);
+  padding: 0.5rem 1rem;
+  border: none;
+  outline: none;
+  display: block;
+  margin: 1rem auto;
+  border-radius: 5px;
+  text-transform: capitalize;
+  font-family: Readex Pro;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.popup-btn:hover {
+  background-color: rgb(15, 15, 53);
+}
+
+.cross-after-text {
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 1rem;
+  display: flex;
+  cursor: pointer;
+  position: fixed;
+  bottom: 6rem;
+}
+
+.gift-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 7.5rem;
+  width: 13rem;
+  animation: updown 1s ease-in infinite;
+}
+.gift-div img {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.cross-after-text-p a {
+  font-size: 1.1rem;
+  font-family: Readex Pro;
+  text-align: center;
+  padding: 0px 0.5rem;
+  color: #363636;
+}
+
+.cross-after-text-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.9rem;
+}
+
+.bottom-strip {
+  display: flex;
+  width: 100%;
+  /* background: #ff7e00; */
+  position: fixed;
+  bottom: -100%;
+  z-index: 95;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+  align-items: center;
+}
+.bottom-strip-first-container .whatsapp_icons_div {
+  background-color: #03a84e;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  position: fixed;
+  bottom: 5%;
+  border-radius: 50%;
+  left: 1%;
+  z-index: 95;
+}
+.bottom-strip-first-container .whatsapp_icons_div svg {
+  height: 22px;
+  width: 22px;
+}
+.bottom-strip-text-container {
+  position: fixed;
+  left: 1%;
+  bottom: 57%;
+  z-index: 97;
+}
+
+.cross-after-text-p {
+  background: #080728;
+  padding: 0.42rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0px 6px 6px 0px;
+  margin-left: -5px;
+  z-index: -10;
+}
+.cross-after-text-p button {
+  border: none;
+  background: transparent;
+  color: #fff;
+}
+.drop_query {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 5px;
+  margin-right: 0px;
+  width: 15%;
+  text-transform: capitalize;
+  padding: 0.2rem;
+  color: #fff;
+  cursor: pointer;
+  transform: rotate(90deg);
+  position: fixed;
+  height: fit-content;
+  right: -6%;
+  background: #ff7e00;
+  z-index: 95;
+  white-space: nowrap;
+  top: 30%;
+}
+
+.drop_query_form {
+  transition: all 0.7s;
+  position: fixed;
+  bottom: 0px;
+  background-color: #fff;
+  z-index: 10000000000;
+  right: 0px;
+  width: 25%;
+  outline: none;
+}
+/* shadcn Sheet enter / exit animation (slides in from the right) */
+.drop_query_form[data-starting-style],
+.drop_query_form[data-ending-style] {
+  right: -50%;
+}
+
+.drop_query_form .drop_query_form_box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1d6695;
+  /* border-radius: 5px 0px 0px 5px; */
+  margin-right: 0px;
+  width: 100%;
+  text-transform: capitalize;
+  padding: 0.2rem 0.2rem 0.2rem 1rem;
+  color: #fff;
+  cursor: pointer;
+  margin-inline: auto;
+}
+.show_query_from {
+  transition: all 0.7s;
+  position: fixed;
+  background-color: #fff;
+  bottom: 0px;
+  z-index: 10000000000;
+  right: 0px;
+  width: 25%;
+}
+
+.query_form {
+  margin-top: 0.8rem;
+  width: 87%;
+  margin-inline: auto;
+}
+.query_form label {
+  display: block;
+  width: 100%;
+  margin: 0rem 0px;
+}
+.query_form input {
+  width: 98%;
+  height: 2.2rem;
+  outline: none;
+  padding: 0.3rem;
+  margin: 0.4rem 0px;
+  font-size: 12px;
+  border-color: #8080801f;
+  border-radius: 5px;
+  border: none;
+  border: 1px solid #7f7f7f7d;
+}
+
+.query_form input[type="submit"] {
+  background: #1d6695;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-size: 14px;
+  border-radius: 6px;
+}
+
+.bottom-strip-text-container .bottom_strip_link {
+  text-decoration: none;
+}
+.bottom-strip-text-container .bottom-strip-text {
+  /* background-color: #080728; */
+  color: #fff;
+  padding: 6px 7px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.bottom-strip-text .register_here {
+  color: #fff;
+  padding: 2px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-decoration: underline;
+}
+
+.bottom-strip-text .st0 {
+  /* fill: red; */
+  height: 40px;
+  width: 40px;
+  animation: updown 1s ease-in infinite;
+  filter: hue-rotate(324deg);
+}
+.for-mobile {
+  display: none;
+}
+@keyframes updown {
+  0%,
+  100% {
+    /* scale: 0.4; */
+    transform: rotate(0deg);
+  }
+  50% {
+    /* scale: 1.1; */
+    transform: rotate(-5deg);
+    /* transform: translateY(-90px); */
+  }
+}
+@media screen and (max-width: 900px) {
+  .cross-after-text {
+    display: none;
+  }
+
+  .cross-after-text {
+    bottom: 7rem;
+  }
+  .bottom-strip {
+    bottom: -15px;
+  }
+  .drop_query {
+    right: -9%;
+    width: 28%;
+  }
+
+  .drop_query_form {
+    width: 100%;
+    bottom: 55px;
+  }
+  .drop_query_form[data-starting-style],
+  .drop_query_form[data-ending-style] {
+    right: -100%;
+  }
+  .bottom-strip-first-container .whatsapp_icons_div {
+    position: absolute;
+    bottom: 11.5rem;
+    right: 8px;
+    background-color: #03a84e;
+    width: fit-content;
+  }
+  .whatsapp_icons_div .whatsapp_icons_inner {
+    background-color: #03a84e;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 50px;
+  }
+  .for-mobile {
+    display: block;
+    font-weight: bold;
+  }
+  .for-pc {
+    display: none;
+  }
+}
+
+/* -- alert box style */
+.error_pop_up_box {
+  position: fixed;
+  top: 10px;
+  width: 100%;
+  right: -100%;
+  transition: all 0.5s;
+  z-index: 600;
+}
+.show_error_pop_box {
+  right: 5px;
+  width: 40%;
+  transition: all 0.4s;
+  animation-name: error_exp;
+  animation-duration: 1s;
+  animation-iteration-count: 1;
+}
+.error_inside_box {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0.7rem 1.5rem;
+  margin: auto;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  cursor: pointer;
+}
+
+.inside_pop_up_form .form_enquiry_course {
+  position: inherit;
+}
+@keyframes error_exp {
+  0% {
+    margin-right: 200px;
+  }
+  100% {
+    margin-right: 0px;
+  }
+}
+.sucess_box {
+  color: #25d366;
+  background-color: #afe5c3;
+  border-color: #afe5c3;
+}
+
+.error_inside_box .your_msg {
+  margin-right: 5px;
+  text-transform: capitalize;
+}
+
+@media screen and (max-width: 600px) {
+  .outer-popup {
+    min-width: 20rem;
+    margin-bottom: 60px;
+  }
+
+  .cross-after-text {
+    display: none;
+  }
+
+  .popup-heading {
+    font-size: 1.2rem;
+  }
+  .whatsapp_icons_div .whatsapp_icons_inner {
+    height: 1.5rem;
+    width: 1.5rem;
+    display: block;
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .outer-popup {
+    min-width: 0px;
+    width: 90%;
+  }
+}
+
+.download_curriculam {
+  position: fixed;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #00000052;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+  transition: all 0.6s;
+  bottom: -200%;
+}
+
+.hide_pop_up {
+  width: 100%;
+  text-align: right;
+  cursor: pointer;
+  margin: 1% 1% 0 0;
+}
+
+.pop_up_form_index {
+  position: fixed;
+
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #00000052;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+  bottom: -200%;
+  transition: all 0.6s;
+}
+.pop_up_form {
+  position: fixed;
+
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #00000052;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 500;
+  transition: all 0.6s;
+  bottom: -200%;
+}
+.show_pop_up_form {
+  transition: all 0.6s;
+  bottom: 0px;
+}
+
+/* ---- shadcn Dialog replacements for the old class-toggled popups ---- */
+.site-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: #00000052;
+  z-index: 500;
+}
+.site-dialog-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 501;
+  outline: none;
+  max-height: 100%;
+  overflow-y: auto;
+}
+.call-dialog-popup {
+  position: fixed;
+  top: 17rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 51;
+  outline: none;
+}
+.call-dialog-popup .inner_show_popop_call {
+  margin: 0 auto;
+  transition: none; /* the old 5s transition would delay the dialog unmounting */
+}
+.call-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: #00000094;
+  z-index: 50;
+}
