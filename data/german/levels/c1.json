@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "German C1 Course in Dehradun | Goethe-Zertifikat C1 | Language Zone",
+    "description": "German C1 (Advanced) course in Dehradun. Fluent, flexible German for study and career. Online and offline batches at Language Zone."
+  },
+  "tagline": "Express ideas fluently and precisely",
+  "outcomes": [
+    "Express ideas fluently and spontaneously",
+    "Understand demanding, longer texts and implicit meaning",
+    "Use the language flexibly for social, academic and professional purposes",
+    "Produce clear, well-structured, detailed text on complex subjects",
+    "Summarise and present information with confidence"
+  ],
+  "suits": [
+    "Learners who have completed B2",
+    "University applicants whose programme asks for C1",
+    "Professionals who present and negotiate in German"
+  ],
+  "syllabus": [
+    "Complex sentence structures",
+    "Stylistic register",
+    "Advanced connectors",
+    "Summaries and presentations",
+    "Idioms and fixed expressions",
+    "Reading long texts",
+    "Discussion and debate",
+    "Academic writing"
+  ],
+  "skills": {
+    "reading": "Long, demanding texts",
+    "listening": "Fast native speech and complex discussion",
+    "writing": "Write structured texts on complex topics",
+    "speaking": "Present and debate fluently"
+  },
+  "faq": [
+    {
+      "q": "Who needs C1?",
+      "a": "Often university applicants and professionals in demanding roles. Requirements differ, so confirm them with your university or employer."
+    },
+    {
+      "q": "How is C1 taught?",
+      "a": "Through reading, discussion and writing practice on real topics, with detailed feedback from your trainer."
+    },
+    {
+      "q": "Is the C1 exam very different from B2?",
+      "a": "The four parts are the same, but the texts are longer and the tasks expect more precise, structured language."
+    }
+  ]
+}

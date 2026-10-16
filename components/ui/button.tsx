@@ -17,6 +17,12 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
+        // Language Zone brand buttons
+        gold: "bg-gold font-semibold text-ink hover:bg-gold/90",
+        ink: "bg-ink font-semibold text-white hover:bg-ink/90",
+        "outline-ink":
+          "border-2 border-ink bg-transparent font-semibold text-ink hover:bg-ink hover:text-white",
+        whatsapp: "bg-whatsapp font-semibold text-white hover:bg-whatsapp/90",
       },
       size: {
         default:
@@ -30,6 +36,9 @@ const buttonVariants = cva(
         "icon-sm":
           "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
         "icon-lg": "size-9",
+        // pill buttons used across the marketing pages
+        pill: "h-[50px] gap-2 rounded-full px-[26px] text-base",
+        "pill-lg": "h-14 gap-2 rounded-full px-[34px] text-[17px]",
       },
     },
     defaultVariants: {
@@ -43,19 +52,12 @@ function Button({
   className,
   variant = "default",
   size = "default",
-  unstyled = false,
   ...props
-}: ButtonPrimitive.Props &
-  VariantProps<typeof buttonVariants> & {
-    /** Skip the shadcn look and rely only on `className` (used to keep the site's own CSS). */
-    unstyled?: boolean;
-  }) {
+}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={
-        unstyled ? className : cn(buttonVariants({ variant, size, className }))
-      }
+      className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
   );

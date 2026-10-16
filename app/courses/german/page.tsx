@@ -1,48 +1,82 @@
 import type { Metadata } from "next";
-import "@/styles/courses/about-us.css";
-import "@/styles/courses/certificate.css";
-import "@/styles/courses/course-curriculam.css";
-import "@/styles/courses/faq.css";
-import "@/styles/courses/our-faculties.css";
-import "@/styles/courses/related-course.css";
-import GermanContent from "@/components/pages/GermanContent";
+import EnquiryButton from "@/components/EnquiryButton";
+import CallbackBand from "@/components/course/CallbackBand";
+import ExamTable from "@/components/course/ExamTable";
+import FaqSection from "@/components/course/FaqSection";
+import LevelCard from "@/components/course/LevelCard";
+import {
+  Band,
+  CardGrid,
+  Lead,
+  PageHero,
+  PageTitle,
+  SectionHead,
+} from "@/components/course/Section";
+import { buttonVariants } from "@/components/ui/button";
+import { GERMAN_COURSE } from "@/lib/courses";
+import { GERMAN_COURSE_URL, GERMAN_LEVELS, PHONE_PRIMARY } from "@/lib/site";
+import { cn } from "@/lib/utils";
+
+const { seo, hero, levelsSection, examSection, faq } = GERMAN_COURSE;
+const URL = `https://languagezone.in${GERMAN_COURSE_URL}`;
 
 export const metadata: Metadata = {
-  title: "Best German Language Training In Dehradun | Language Zone",
-  description:
-    "Language Zone provides the Best German Language Training In Dehradun | German language Course In Dehradun| Goethe certification",
-  keywords:
-    "German Language Training In Dehradun, German language Course In Dehradun, German Language Classes In Dehradun, Learn German language online, Learn German online, German language training, German language course, German language classes, German language, Learn German online, Learn German language online, Goethe certificate, Goethe certification.",
-  alternates: {
-    canonical: "https://languagezone.in/courses/german/",
-  },
+  title: seo.title,
+  description: seo.description,
+  keywords: seo.keywords,
+  alternates: { canonical: URL },
   openGraph: {
     type: "website",
-    title: "Best German Language Training In Dehradun | Language Zone",
-    description:
-      "German Language Training In Dehradun, German language Course In Dehradun, German Language Classes In Dehradun, Learn German language online, Learn German online, German language training, German language course, German language classes, German language, Learn German online, Learn German language online, Goethe certificate, Goethe certification.",
-    url: "https://languagezone.in/courses/german/",
-  },
-  other: {
-    "identifier-URL": "https://languagezone.in/courses/german/",
-    url: "https://languagezone.in/courses/german/",
-    "instagram:title":
-      "Best German Language Training In Dehradun | Language Zone",
-    "instagram:description":
-      "German Language Training In Dehradun, German language Course In Dehradun, German Language Classes In Dehradun, Learn German language online, Learn German online, German language training, German language course, German language classes, German language, Learn German online, Learn German language online, Goethe certificate, Goethe certification.",
-    "instagram:card": "summary",
-    "instagram:site": "@LanguageZone",
-    "twitter:card": "https://languagezone.in/courses/german/",
-    "twitter:site": "l",
-    "twitter:title":
-      "Best German Language Training In Dehradun | Language Zone",
-    "twitter:description":
-      "German Language Training In Dehradun, German language Course In Dehradun, German Language Classes In Dehradun, Learn German language online, Learn German online, German language training, German language course,, German language classes, German language, Learn German online, Learn German language online, Goethe certificate, Goethe certification.",
-    "twitter:image": "twitter_image",
-    "twitter:url": "https://languagezone.in/courses/german/",
+    title: seo.title,
+    description: seo.description,
+    url: URL,
   },
 };
 
 export default function Page() {
-  return <GermanContent />;
+  return (
+    <main>
+      <PageHero
+        crumbs={[{ label: "Home", href: "/" }, { label: "German course" }]}
+      >
+        <PageTitle>{hero.title}</PageTitle>
+        <Lead>{hero.lead}</Lead>
+        <div className="mt-6.5 flex flex-wrap gap-3">
+          <EnquiryButton className="max-md:w-full">
+            Check your level
+          </EnquiryButton>
+          <a
+            href={`tel:${PHONE_PRIMARY.tel}`}
+            className={cn(
+              buttonVariants({ variant: "outline-ink", size: "pill" }),
+              "max-md:w-full",
+            )}
+          >
+            Call {PHONE_PRIMARY.label}
+          </a>
+        </div>
+      </PageHero>
+
+      <Band>
+        <SectionHead
+          eyebrow={levelsSection.eyebrow}
+          title={levelsSection.title}
+        />
+        <CardGrid min="360px">
+          {GERMAN_LEVELS.map((l) => (
+            <LevelCard key={l.slug} level={l} detailed />
+          ))}
+        </CardGrid>
+      </Band>
+
+      <Band tone="paper">
+        <SectionHead eyebrow={examSection.eyebrow} title={examSection.title} />
+        <ExamTable />
+      </Band>
+
+      <FaqSection title="German course FAQs" items={faq} tinted={false} />
+
+      <CallbackBand />
+    </main>
+  );
 }

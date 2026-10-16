@@ -1,58 +1,140 @@
 import type { Metadata } from "next";
-import "@/styles/blog_full_page.css";
-import { getBlog } from "@/lib/blog";
+import { notFound } from "next/navigation";
+import ArticleBody from "@/components/blog/ArticleBody";
+import PostCard from "@/components/blog/PostCard";
+import CallbackBand from "@/components/course/CallbackBand";
+import LevelCard from "@/components/course/LevelCard";
+import {
+  Band,
+  CardGrid,
+  PageHero,
+  PageTitle,
+  SectionHead,
+} from "@/components/course/Section";
+import { formatDate, getPost, getPosts, postUrl } from "@/lib/blog";
+import { GERMAN_LEVELS } from "@/lib/site";
 
-type Props = { params: Promise<{ slug: string }> };
+// Posts come from data/blog/posts.json; unknown slugs are a 404.
+export const dynamicParams = false;
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const data = await getBlog(slug);
+export function generateStaticParams() {
+  return getPosts().map((p) => ({ slug: p.slug }));
+}
 
+const SITE = "https://languagezone.in";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/courses/blog/[slug]">): Promise<Metadata> {
+  const post = getPost((await params).slug);
+  if (!post) return {};
+  const url = `${SITE}${postUrl(post.slug)}`;
   return {
-    title: data.pageTitle,
-    description: data.meta_description,
-    keywords: data.keywords,
-    alternates: { canonical: "https://languagezone.in/" },
+    title: post.seo.title,
+    description: post.seo.description,
+    keywords: post.seo.keywords,
+    alternates: { canonical: url },
+    authors: [{ name: post.author }],
     openGraph: {
-      type: "website",
-      title: "Best Foreign Language Courses In Dehradun By Language Zone",
-      description: data.meta_description,
-      url: "https://languagezone.in//",
-    },
-    other: {
-      "identifier-URL": "https://languagezone.in/",
-      url: "https://languagezone.in/",
-      "instagram:title":
-        "Best Foreign Language Courses In Dehradun By Language Zone",
-      "instagram:description": data.meta_description,
-      "instagram:card": "summary",
-      "instagram:site": "@LanguageZone",
-      "twitter:card": "https://languagezone.in/",
-      "twitter:site": "",
-      "twitter:title":
-        "Best Foreign Language Courses In Dehradun By Language Zone",
-      "twitter:description": data.meta_description,
-      "twitter:image": "twitter_image",
-      "twitter:url": "https://languagezone.in/",
+      type: "article",
+      title: post.seo.title,
+      description: post.seo.description,
+      url,
+      publishedTime: post.date,
+      section: post.category,
     },
   };
 }
 
-export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params;
-  const data = await getBlog(slug);
+export default async function BlogPostPage({
+  params,
+}: PageProps<"/courses/blog/[slug]">) {
+  const post = getPost((await params).slug);
+  if (!post) notFound();
+
+  const url = `${SITE}${postUrl(post.slug)}`;
+  const more = getPosts()
+    .filter((p) => p.slug !== post.slug)
+    .slice(0, 3);
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.seo.description,
+      keywords: post.seo.keywords,
+      articleSection: post.category,
+      datePublished: post.date,
+      author: { "@type": "Organization", name: post.author },
+      publisher: {
+        "@type": "EducationalOrganization",
+        name: "Language Zone",
+        url: `${SITE}/`,
+      },
+      mainEntityOfPage: url,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { name: "Home", item: `${SITE}/` },
+        { name: "Blog", item: `${SITE}/courses/blog` },
+        { name: post.title, item: url },
+      ].map((c, i) => ({ "@type": "ListItem", position: i + 1, ...c })),
+    },
+  ];
 
   return (
-    <main style={{ background: "#ede8f2" }}>
-      <div className="div_main_outer_container">
-        <div className="blog-date-section">
-          <p className="blog-date">Created On {data.createdOn}</p>
-        </div>
-        <div
-          className="main_blog_outer_section"
-          dangerouslySetInnerHTML={{ __html: data.content }}
-        />
-      </div>
+    <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
+      <PageHero
+        crumbs={[
+          { label: "Home", href: "/" },
+          { label: "Blog", href: "/courses/blog" },
+          { label: post.category },
+        ]}
+        className="max-w-[860px]"
+      >
+        <PageTitle>{post.title}</PageTitle>
+        <p className="mt-3 text-mute">
+          {post.author} ·{" "}
+          <time dateTime={post.date}>{formatDate(post.date)}</time> ·{" "}
+          {post.readMinutes} min read
+        </p>
+      </PageHero>
+
+      <Band narrow>
+        <article>
+          <ArticleBody blocks={post.content} />
+        </article>
+      </Band>
+
+      <Band tone="paper">
+        <SectionHead eyebrow="Next step" title="Find your German level" />
+        <CardGrid min="360px">
+          {GERMAN_LEVELS.map((l) => (
+            <LevelCard key={l.slug} level={l} />
+          ))}
+        </CardGrid>
+      </Band>
+
+      {more.length > 0 && (
+        <Band>
+          <SectionHead eyebrow="Guides" title="More from our trainers" />
+          <CardGrid min="320px">
+            {more.map((p) => (
+              <PostCard key={p.slug} post={p} />
+            ))}
+          </CardGrid>
+        </Band>
+      )}
+
+      <CallbackBand />
     </main>
   );
 }

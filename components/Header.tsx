@@ -4,18 +4,34 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { MenuIcon } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import {
   EMAIL,
   GERMAN_COURSE_URL,
   GERMAN_LEVELS,
-  OTHER_COURSES,
   PAY_URL,
   PHONE_PRIMARY,
   PHONE_SECONDARY,
+  levelUrl,
 } from "@/lib/site";
 
 const NAV = [
-  { href: "/", label: "Home", match: (p: string) => p === "/" },
   { href: "/#about", label: "About us", match: () => false },
   {
     href: "/courses/blog",
@@ -29,28 +45,30 @@ const NAV = [
   },
 ];
 
+// desktop nav link: gold underline on the current page
+const navLink =
+  "border-b-[3px] border-transparent py-2 font-medium text-navy aria-[current=page]:border-gold aria-[current=page]:text-indigo";
+
 export default function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
   const current = (active: boolean) =>
     active ? { "aria-current": "page" as const } : {};
-  const coursesActive =
-    pathname.startsWith("/courses/") &&
-    !NAV.some((n) => n.href !== "/" && n.match(pathname));
+  const coursesActive = pathname.startsWith(GERMAN_COURSE_URL);
 
   return (
     <>
-      <div className="lz-tri" />
-      <div className="lz-topbar">
-        <div className="lz-wrap lz-tb-in">
+      <div className="tri-stripe" />
+      <div className="hidden bg-ink text-sm text-white lg:block">
+        <div className="page-wrap flex justify-between gap-4 py-2">
           <span>Race Course, Dehradun, Uttarakhand 248001</span>
-          <span className="lz-tb-r">
+          <span className="flex gap-6">
             <a href={`tel:${PHONE_PRIMARY.tel}`}>{PHONE_PRIMARY.label}</a>
             <a href={`tel:${PHONE_SECONDARY.tel}`}>{PHONE_SECONDARY.label}</a>
             <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
             <a
-              className="lz-gold"
+              className="font-medium text-gold"
               href={PAY_URL}
               target="_blank"
               rel="noopener"
@@ -60,113 +78,150 @@ export default function Header() {
           </span>
         </div>
       </div>
-      <header className="lz-hdr">
-        <div className="lz-wrap lz-hdr-in">
-          <Link className="lz-brand" href="/" aria-label="Language Zone, home">
-            <img src="/images/logo.png" alt="Language Zone" />
+
+      <header className="sticky top-0 z-40 border-b border-line bg-white">
+        <div className="page-wrap flex items-center justify-between gap-6 py-2.5 lg:py-3.5">
+          <Link href="/" aria-label="Language Zone, home" className="shrink-0">
+            <img
+              src="/images/logo.png"
+              alt="Language Zone"
+              className="h-[38px] w-auto lg:h-[46px]"
+            />
           </Link>
 
-          <nav className="lz-nav" aria-label="Main">
-            <Link href="/" {...current(pathname === "/")}>
+          <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
+            <Link href="/" className={navLink} {...current(pathname === "/")}>
               Home
             </Link>
-            <div className="lz-dd">
-              <Link href={GERMAN_COURSE_URL} {...current(coursesActive)}>
-                German course <span aria-hidden="true">▾</span>
-              </Link>
-              <div className="lz-dd-menu">
-                {GERMAN_LEVELS.map((l) => (
-                  <Link key={l.code} href={GERMAN_COURSE_URL}>
-                    <b>{l.code}</b> {l.name}
-                  </Link>
-                ))}
-                <p className="lz-dd-label">Other courses</p>
-                {OTHER_COURSES.map((c) => (
-                  <Link key={c.href} href={c.href}>
-                    {c.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-            {NAV.slice(1).map((n) => (
-              <Link key={n.href} href={n.href} {...current(n.match(pathname))}>
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger
+                    className={cn(
+                      "h-auto rounded-none bg-transparent px-0 text-base hover:bg-transparent focus:bg-transparent data-popup-open:bg-transparent",
+                      navLink,
+                      coursesActive && "border-gold text-indigo",
+                    )}
+                  >
+                    German course
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent className="w-72 p-2">
+                    <NavigationMenuLink
+                      render={<Link href={GERMAN_COURSE_URL} />}
+                      className="font-semibold text-navy"
+                    >
+                      All levels, A1 to C2
+                    </NavigationMenuLink>
+                    {GERMAN_LEVELS.map((l) => (
+                      <NavigationMenuLink
+                        key={l.slug}
+                        render={<Link href={levelUrl(l.slug)} />}
+                        className="text-base text-navy"
+                      >
+                        <b className="min-w-8 text-brand-red">{l.code}</b>
+                        {l.name}
+                      </NavigationMenuLink>
+                    ))}
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+            {NAV.map((n) => (
+              <Link
+                key={n.href}
+                href={n.href}
+                className={navLink}
+                {...current(n.match(pathname))}
+              >
                 {n.label}
               </Link>
             ))}
           </nav>
 
           <Link
-            className="lz-btn lz-btn-gold lz-hdr-cta"
             href="/courses/contact-us"
+            className={cn(
+              buttonVariants({ variant: "gold", size: "pill" }),
+              "hidden lg:inline-flex",
+            )}
           >
             Check your level
           </Link>
 
-          <button
-            className="lz-menu-btn"
-            type="button"
-            aria-expanded={open}
-            aria-controls="lz-drawer"
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen(!open)}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              aria-hidden="true"
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger
+              className="flex size-12 items-center justify-center rounded-xl bg-paper text-navy lg:hidden"
+              aria-label="Open menu"
             >
-              {open ? (
-                <path d="M6 6l12 12M18 6L6 18" />
-              ) : (
-                <path d="M4 7h16M4 12h16M4 17h16" />
-              )}
-            </svg>
-          </button>
+              <MenuIcon className="size-6" />
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[88%] gap-0 p-0">
+              <SheetTitle className="border-b border-line px-5 py-5 font-disp text-xl text-navy">
+                Menu
+              </SheetTitle>
+              <nav
+                aria-label="Main"
+                className="flex flex-col overflow-y-auto px-5 pb-6"
+                // close the drawer after any link inside it is followed
+                onClick={(e) => {
+                  if ((e.target as HTMLElement).closest("a")) setOpen(false);
+                }}
+              >
+                <DrawerLink href="/" active={pathname === "/"}>
+                  Home
+                </DrawerLink>
+                <DrawerLink href={GERMAN_COURSE_URL} active={coursesActive}>
+                  German course
+                </DrawerLink>
+                <div className="grid grid-cols-2 gap-2 py-3">
+                  {GERMAN_LEVELS.map((l) => (
+                    <Link
+                      key={l.slug}
+                      href={levelUrl(l.slug)}
+                      className="flex min-h-12 items-center gap-2.5 rounded-xl bg-paper px-3 text-sm text-navy aria-[current=page]:ring-2 aria-[current=page]:ring-indigo"
+                      {...current(pathname === levelUrl(l.slug))}
+                    >
+                      <b className="font-disp text-lg text-brand-red">
+                        {l.code}
+                      </b>
+                      <span>{l.name}</span>
+                    </Link>
+                  ))}
+                </div>
+                {NAV.map((n) => (
+                  <DrawerLink
+                    key={n.href}
+                    href={n.href}
+                    active={n.match(pathname)}
+                  >
+                    {n.label}
+                  </DrawerLink>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
-
-        <nav
-          className="lz-drawer"
-          id="lz-drawer"
-          aria-label="Main"
-          hidden={!open}
-          // close the drawer after any link inside it is followed
-          onClick={(e) => {
-            if ((e.target as HTMLElement).closest("a")) setOpen(false);
-          }}
-        >
-          <div className="lz-wrap">
-            <Link href="/" {...current(pathname === "/")}>
-              Home
-            </Link>
-            <Link href={GERMAN_COURSE_URL} {...current(coursesActive)}>
-              German course
-            </Link>
-            <div className="lz-dl">
-              {GERMAN_LEVELS.map((l) => (
-                <Link key={l.code} href={GERMAN_COURSE_URL}>
-                  <b>{l.code}</b>
-                  <span>{l.name}</span>
-                </Link>
-              ))}
-              {OTHER_COURSES.map((c) => (
-                <Link key={c.href} href={c.href}>
-                  <span>{c.label}</span>
-                </Link>
-              ))}
-            </div>
-            {NAV.slice(1).map((n) => (
-              <Link key={n.href} href={n.href} {...current(n.match(pathname))}>
-                {n.label}
-              </Link>
-            ))}
-          </div>
-        </nav>
       </header>
     </>
+  );
+}
+
+function DrawerLink({
+  href,
+  active,
+  children,
+}: {
+  href: string;
+  active: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className="flex min-h-12 items-center border-b border-line font-medium text-navy aria-[current=page]:font-semibold aria-[current=page]:text-indigo"
+    >
+      {children}
+    </Link>
   );
 }

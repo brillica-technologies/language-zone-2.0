@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "German Course in Dehradun: Levels A1 to C2 | Language Zone",
+    "description": "Compare German courses A1, A2, B1, B2, C1 and C2 at Language Zone, Dehradun. Goethe-Zertifikat preparation with online and offline batches.",
+    "keywords": "German Language Course In Dehradun, German Classes In Dehradun, Learn German In Dehradun, German A1 Course, German B1 Course, Goethe-Zertifikat, Goethe Certification Dehradun"
+  },
+  "hero": {
+    "title": "German Language Course in Dehradun: A1 to C2",
+    "lead": "Start your German training with trainers who prepare you for the Goethe-Zertifikat, the internationally recognised German language certificate. Pick a level below, or take a short level check if you are not sure."
+  },
+  "levelsSection": {
+    "eyebrow": "Levels",
+    "title": "Six German courses, A1 to C2"
+  },
+  "examSection": {
+    "eyebrow": "Certifications",
+    "title": "Goethe-Zertifikat for every level"
+  },
+  "faq": [
+    {
+      "q": "Which German level should I start with?",
+      "a": "Complete beginners start at A1. If you already know some German, a short level check places you in A2 or higher."
+    },
+    {
+      "q": "Do you prepare students for the Goethe-Zertifikat exams?",
+      "a": "Yes. Every level course follows the syllabus of its Goethe-Zertifikat, and we run mock tests in the real exam format."
+    },
+    {
+      "q": "Are German classes online or offline?",
+      "a": "Both. You can attend at our Race Course centre in Dehradun or join online, in morning or evening batches, or book personalised sessions."
+    },
+    {
+      "q": "How long does it take to reach B1 or B2?",
+      "a": "It depends on your starting point and the batch you join. A counsellor can give you a timeline for your goal."
+    }
+  ],
+  "level": {
+    "glance": {
+      "mode": "Online and offline",
+      "batches": "Morning, evening or personalised",
+      "feesAndDuration": "Shared on your level check call"
+    },
+    "examIntro": "The Goethe exam tests four skills. We train each one in class and in mock tests. Check the Goethe-Institut website for the latest exam format and dates.",
+    "skillLabels": {
+      "reading": { "de": "Lesen", "en": "Reading" },
+      "listening": { "de": "Hören", "en": "Listening" },
+      "writing": { "de": "Schreiben", "en": "Writing" },
+      "speaking": { "de": "Sprechen", "en": "Speaking" }
+    }
+  }
+}

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import "@/styles/home.css";
 import HomeContent from "@/components/pages/HomeContent";
-import { getBlogs } from "@/lib/blog";
+import { getPosts } from "@/lib/blog";
 import { ADDRESS, EMAIL, PHONE_PRIMARY } from "@/lib/site";
 
 const TITLE = "German Language Course in Dehradun | A1 to C2 | Language Zone";
@@ -63,8 +62,8 @@ const JSON_LD = {
   ],
 };
 
-export default async function Page() {
-  const posts = (await getBlogs()).slice(0, 3);
+export default function Page() {
+  const posts = getPosts().slice(0, 3);
   return (
     <>
       <script

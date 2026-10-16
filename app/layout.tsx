@@ -1,16 +1,24 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { Fraunces, Readex_Pro } from "next/font/google";
 import "./globals.css";
-import "@/styles/main.css";
-import "@/styles/popup.css";
-import "@/styles/course_list.css";
-import "@/styles/courses/banner.css";
-import "@/styles/site.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import CoursesList from "@/components/CoursesList";
 import Popup from "@/components/Popup";
-import SiteScripts from "@/components/SiteScripts";
+
+const readex = Readex_Pro({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-readex",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   authors: [{ name: "LanguageZone" }],
@@ -54,20 +62,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Montserrat:wght@400;600;700&family=Outfit&family=Readex+Pro:wght@200;300;400;500;600&display=swap"
-        />
-      </head>
+    <html lang="en" className={`${readex.variable} ${fraunces.variable}`}>
       <body>
         <noscript>
           <iframe
@@ -87,9 +82,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
-        <CoursesList />
         <Popup />
-        <SiteScripts />
 
         <Script id="fb-pixel" strategy="afterInteractive">
           {FB_PIXEL}

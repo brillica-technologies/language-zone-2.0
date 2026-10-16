@@ -43,32 +43,10 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
-  unstyled = false,
-  overlayClassName,
   ...props
 }: DialogPrimitive.Popup.Props & {
   showCloseButton?: boolean;
-  /** Skip the shadcn look; only `className` / `overlayClassName` (the site's CSS) apply. */
-  unstyled?: boolean;
-  overlayClassName?: string;
 }) {
-  if (unstyled) {
-    return (
-      <DialogPortal>
-        <DialogPrimitive.Backdrop
-          data-slot="dialog-overlay"
-          className={overlayClassName}
-        />
-        <DialogPrimitive.Popup
-          data-slot="dialog-content"
-          className={className}
-          {...props}
-        >
-          {children}
-        </DialogPrimitive.Popup>
-      </DialogPortal>
-    );
-  }
   return (
     <DialogPortal>
       <DialogOverlay />
