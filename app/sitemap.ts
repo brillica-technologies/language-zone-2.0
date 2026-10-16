@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     })),
     { url: `${SITE}/blogs`, priority: 0.6 },
+    { url: `${SITE}/about-us`, priority: 0.6 },
     { url: `${SITE}/contact-us`, priority: 0.6 },
   ];
   const posts = getPosts().map((p) => ({
