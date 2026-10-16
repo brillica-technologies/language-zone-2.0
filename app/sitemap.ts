@@ -1,25 +1,56 @@
 import type { MetadataRoute } from "next";
 import { getPosts, postUrl } from "@/lib/blog";
+import { absoluteUrl } from "@/lib/seo";
 import { GERMAN_COURSE_URL, GERMAN_LEVELS, levelUrl } from "@/lib/site";
 
-const SITE = "https://languagezone.in";
-
+// Every public route. Static pages carry the build date; posts carry their own date.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages: MetadataRoute.Sitemap = [
-    { url: `${SITE}/`, priority: 1 },
-    { url: `${SITE}${GERMAN_COURSE_URL}`, priority: 0.9 },
+  const built = new Date();
+  const posts = getPosts();
+  const latestPost = posts[0]?.date ?? built;
+
+  return [
+    {
+      url: absoluteUrl("/"),
+      lastModified: built,
+      changeFrequency: "weekly",
+      priority: 1,
+    },
+    {
+      url: absoluteUrl(GERMAN_COURSE_URL),
+      lastModified: built,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     ...GERMAN_LEVELS.map((l) => ({
-      url: `${SITE}${levelUrl(l.slug)}`,
-      priority: 0.8,
+      url: absoluteUrl(levelUrl(l.slug)),
+      lastModified: built,
+      changeFrequency: "monthly" as const,
+      priority: 0.9,
     })),
-    { url: `${SITE}/blogs`, priority: 0.6 },
-    { url: `${SITE}/about-us`, priority: 0.6 },
-    { url: `${SITE}/contact-us`, priority: 0.6 },
+    {
+      url: absoluteUrl("/about"),
+      lastModified: built,
+      changeFrequency: "yearly",
+      priority: 0.6,
+    },
+    {
+      url: absoluteUrl("/contact-us"),
+      lastModified: built,
+      changeFrequency: "yearly",
+      priority: 0.7,
+    },
+    {
+      url: absoluteUrl("/blogs"),
+      lastModified: latestPost,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    ...posts.map((p) => ({
+      url: absoluteUrl(postUrl(p.slug)),
+      lastModified: p.date,
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    })),
   ];
-  const posts = getPosts().map((p) => ({
-    url: `${SITE}${postUrl(p.slug)}`,
-    lastModified: p.date,
-    priority: 0.5,
-  }));
-  return [...pages, ...posts];
 }

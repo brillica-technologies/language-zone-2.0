@@ -1,8 +1,8 @@
 {
   "seo": {
-    "title": "German Course in Dehradun: Levels A1 to C2 | Language Zone",
-    "description": "Compare German courses A1, A2, B1, B2, C1 and C2 at Language Zone, Dehradun. Goethe-Zertifikat preparation with online and offline batches.",
-    "keywords": "German Language Course In Dehradun, German Classes In Dehradun, Learn German In Dehradun, German A1 Course, German B1 Course, Goethe-Zertifikat, Goethe Certification Dehradun"
+    "title": "German Course in Dehradun: A1 to C2 Levels | Language Zone",
+    "description": "Compare German courses A1, A2, B1, B2, C1 and C2 in Dehradun. Goethe-Zertifikat preparation with certified trainers, online and offline batches.",
+    "keywords": "German course in Dehradun, German classes in Dehradun, German language course Dehradun, Goethe-Zertifikat Dehradun, German A1 to C2 course, learn German in Dehradun, online German classes Uttarakhand"
   },
   "hero": {
     "title": "German Language Course in Dehradun: A1 to C2",
@@ -18,20 +18,28 @@
   },
   "faq": [
     {
-      "q": "Which German level should I start with?",
-      "a": "Complete beginners start at A1. If you already know some German, a short level check places you in A2 or higher."
+      "q": "Which German course in Dehradun is right for me?",
+      "a": "Choose by your goal and your current level. Beginners start at A1; learners preparing for work, Ausbildung or visa applications often aim for B1; many German-taught university programmes ask for B2 or C1. A free level check tells you where to start."
     },
     {
-      "q": "Do you prepare students for the Goethe-Zertifikat exams?",
-      "a": "Yes. Every level course follows the syllabus of its Goethe-Zertifikat, and we run mock tests in the real exam format."
+      "q": "What is the difference between the A1, A2, B1, B2, C1 and C2 German levels?",
+      "a": "They are the six levels of the Common European Framework of Reference (CEFR). A1 and A2 are basic, B1 and B2 are independent, and C1 and C2 are proficient. Each level has its own Goethe-Zertifikat exam."
     },
     {
-      "q": "Are German classes online or offline?",
-      "a": "Both. You can attend at our Race Course centre in Dehradun or join online, in morning or evening batches, or book personalised sessions."
+      "q": "Do all German courses at Language Zone follow the Goethe-Zertifikat?",
+      "a": "Yes. Each German course in Dehradun follows the syllabus of its Goethe-Zertifikat and trains all four exam skills: Lesen (reading), Hören (listening), Schreiben (writing) and Sprechen (speaking)."
     },
     {
-      "q": "How long does it take to reach B1 or B2?",
-      "a": "It depends on your starting point and the batch you join. A counsellor can give you a timeline for your goal."
+      "q": "Where do I take the Goethe exam if I study German in Dehradun?",
+      "a": "Goethe exams are held at Goethe-Institut centres and their licensed exam partners, such as the Goethe-Institut in New Delhi. Check the Goethe-Institut website for current centres and dates; our trainers guide you through choosing a date and registering."
+    },
+    {
+      "q": "Can I join a higher German level directly?",
+      "a": "Yes. If you already know some German, our trainers assess your speaking, grammar and vocabulary in a short level check and place you in the A2, B1, B2, C1 or C2 batch that fits."
+    },
+    {
+      "q": "Are German classes in Dehradun available on weekends or evenings?",
+      "a": "We run morning and evening batches and personalised sessions, so students and working professionals in Dehradun can fit German classes around college or work. Ask us for the current batch timings."
     }
   ],
   "level": {
@@ -42,10 +50,22 @@
     },
     "examIntro": "The Goethe exam tests four skills. We train each one in class and in mock tests. Check the Goethe-Institut website for the latest exam format and dates.",
     "skillLabels": {
-      "reading": { "de": "Lesen", "en": "Reading" },
-      "listening": { "de": "Hören", "en": "Listening" },
-      "writing": { "de": "Schreiben", "en": "Writing" },
-      "speaking": { "de": "Sprechen", "en": "Speaking" }
+      "reading": {
+        "de": "Lesen",
+        "en": "Reading"
+      },
+      "listening": {
+        "de": "Hören",
+        "en": "Listening"
+      },
+      "writing": {
+        "de": "Schreiben",
+        "en": "Writing"
+      },
+      "speaking": {
+        "de": "Sprechen",
+        "en": "Speaking"
+      }
     }
   }
 }

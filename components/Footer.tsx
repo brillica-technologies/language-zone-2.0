@@ -2,10 +2,16 @@
 import Link from "next/link";
 import QuickBar from "@/components/QuickBar";
 import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedInIcon,
+} from "@/components/SocialIcons";
+import {
   ADDRESS,
   EMAIL,
   GERMAN_COURSE_URL,
   GERMAN_LEVELS,
+  MAP_LINK,
   PAY_URL,
   PHONE_PRIMARY,
   PHONE_SECONDARY,
@@ -13,9 +19,21 @@ import {
 } from "@/lib/site";
 
 const SOCIAL = [
-  { href: "https://www.facebook.com/LanguagezoneTraining", label: "Facebook" },
-  { href: "https://www.instagram.com/languagezone0309/", label: "Instagram" },
-  { href: "https://www.linkedin.com/company/72137283/", label: "LinkedIn" },
+  {
+    href: "https://www.facebook.com/LanguagezoneTraining",
+    label: "Facebook",
+    Icon: FacebookIcon,
+  },
+  {
+    href: "https://www.instagram.com/languagezone0309/",
+    label: "Instagram",
+    Icon: InstagramIcon,
+  },
+  {
+    href: "https://www.linkedin.com/company/72137283/",
+    label: "LinkedIn",
+    Icon: LinkedInIcon,
+  },
 ];
 
 function Column({
@@ -55,6 +73,14 @@ export default function Footer() {
             <address className="mt-3.5 max-w-90 text-[15px] text-on-ink not-italic">
               {ADDRESS}
             </address>
+            <a
+              href={MAP_LINK}
+              target="_blank"
+              rel="noopener"
+              className="mt-2.5 inline-block font-semibold text-gold hover:text-white"
+            >
+              Get Directions →
+            </a>
           </div>
           <Column title="German levels">
             <li>
@@ -70,19 +96,13 @@ export default function Footer() {
           </Column>
           <Column title="Company">
             <li>
-              <Link href="/about-us">About us</Link>
+              <Link href="/about">About</Link>
             </li>
             <li>
               <Link href="/blogs">Blog</Link>
             </li>
             <li>
               <Link href="/contact-us">Contact us</Link>
-            </li>
-            <li>
-              <a href="/static/privacy-policy">Privacy policy</a>
-            </li>
-            <li>
-              <a href="/static/terms-and-conditions">Terms and conditions</a>
             </li>
             <li>
               <a href={PAY_URL} target="_blank" rel="noopener">
@@ -100,16 +120,18 @@ export default function Footer() {
             <li>
               <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
             </li>
-            <li className="flex flex-wrap gap-4 pt-1.5">
-              {SOCIAL.map((s) => (
+            <li className="flex gap-3 pt-2">
+              {SOCIAL.map(({ href, label, Icon }) => (
                 <a
-                  key={s.href}
-                  href={s.href}
+                  key={href}
+                  href={href}
                   target="_blank"
                   rel="noopener"
-                  className="text-gold"
+                  aria-label={`Language Zone on ${label}`}
+                  title={label}
+                  className="flex size-10 items-center justify-center rounded-full bg-ink-soft text-gold transition-colors hover:bg-gold hover:text-ink"
                 >
-                  {s.label}
+                  <Icon className="size-[18px]" />
                 </a>
               ))}
             </li>
@@ -117,7 +139,7 @@ export default function Footer() {
         </div>
         <div className="page-wrap border-t border-[#34346a] pt-4.5 pb-6.5 text-sm text-on-ink">
           <p>
-            © 2017–{new Date().getFullYear()} Language Zone, a Brillica Services
+            © {new Date().getFullYear()} Language Zone, a Brillica Services
             company. All rights reserved.
           </p>
         </div>

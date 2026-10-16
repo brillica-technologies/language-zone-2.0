@@ -15,7 +15,7 @@ export type Skill = "reading" | "listening" | "writing" | "speaking";
 
 /** Full level page content (data/german/levels/<slug>.json). */
 export type LevelDetail = {
-  seo: { title: string; description: string };
+  seo: { title: string; description: string; keywords: string };
   tagline: string;
   outcomes: string[];
   suits: string[];

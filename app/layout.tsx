@@ -1,10 +1,12 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Fraunces, Readex_Pro } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Popup from "@/components/Popup";
+import JsonLd from "@/components/JsonLd";
+import { GEO, LOCALE, SITE_NAME, SITE_URL, siteJsonLd } from "@/lib/seo";
 
 const readex = Readex_Pro({
   subsets: ["latin"],
@@ -21,26 +23,52 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  authors: [{ name: "LanguageZone" }],
-  robots: { index: true, follow: true },
-  icons: { icon: "/images/small_logo.png" },
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "German Language Course in Dehradun | A1 to C2 | Language Zone",
+    template: "%s | Language Zone",
+  },
+  description:
+    "Language Zone is a German language institute in Dehradun. Goethe-Zertifikat preparation from A1 to C2 with certified trainers, online and offline batches.",
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "education",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: "/images/small_logo.png",
+    apple: "/images/small_logo.png",
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: LOCALE,
+    url: SITE_URL,
+  },
+  twitter: { card: "summary_large_image" },
   other: {
-    locale: "dehradun_IN",
-    "geo.region": ",In-dehradun",
-    "geo.placename": ",Dehradun",
-    "geo.position": "30.29403265533804, 77.99704247140885",
-    ICBM: "30.29403265533804, 77.99704247140885",
-    classification: "education and training",
-    distribution: "local",
-    WebCrawlers: "All",
-    MSNBots: "All, FOLLOW",
-    "Googlebot-Image": "All",
-    BINGBots: "All, FOLLOW",
-    YAHOOBots: "All, FOLLOW",
-    GoogleBots: "All, FOLLOW",
-    copyright: "LanguageZone",
+    // local SEO: Dehradun, Uttarakhand (ISO 3166-2: IN-UT)
+    "geo.region": "IN-UT",
+    "geo.placename": "Dehradun",
+    "geo.position": `${GEO.lat};${GEO.lng}`,
+    ICBM: `${GEO.lat}, ${GEO.lng}`,
     "facebook-domain-verification": "d567zwhhdf2fxazfre00cozodaq801",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#14143a",
 };
 
 const FB_PIXEL = `!function(f,b,e,v,n,t,s)
@@ -62,8 +90,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${readex.variable} ${fraunces.variable}`}>
+    <html lang="en-IN" className={`${readex.variable} ${fraunces.variable}`}>
       <body>
+        <JsonLd data={siteJsonLd()} />
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-P5K43J4L"

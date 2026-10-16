@@ -9,32 +9,54 @@ import {
 } from "@/components/course/Section";
 import BlogEmpty from "@/components/blog/BlogEmpty";
 import PostCard from "@/components/blog/PostCard";
-import { getPosts } from "@/lib/blog";
+import JsonLd from "@/components/JsonLd";
+import { getPosts, postUrl } from "@/lib/blog";
+import { ORG_ID, absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
-const TITLE = "German Learning Blog | Goethe Exams and Grammar | Language Zone";
-const DESCRIPTION =
-  "Guides on Goethe-Zertifikat levels, German grammar, learning habits and studying in Germany from the trainers at Language Zone, Dehradun.";
-const URL = "https://languagezone.in/blogs";
+const PATH = "/blogs";
 
-export const metadata: Metadata = {
-  title: TITLE,
-  description: DESCRIPTION,
-  keywords:
-    "German Learning Blog, Learn German, Goethe-Zertifikat, German Grammar, German Language Course In Dehradun, Study In Germany",
-  alternates: { canonical: URL },
-  openGraph: {
-    type: "website",
-    title: TITLE,
-    description: DESCRIPTION,
-    url: URL,
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "German Learning Blog & Goethe Exam Tips | Language Zone",
+  description:
+    "German learning guides from our trainers in Dehradun: Goethe-Zertifikat levels, grammar tips, study in Germany and beginner study plans.",
+  keywords: [
+    "German learning blog",
+    "Goethe exam tips",
+    "German grammar tips",
+    "learn German in Dehradun",
+    "study in Germany from Dehradun",
+    "German classes in Dehradun",
+  ],
+  path: PATH,
+});
 
 export default function BlogPage() {
   const posts = getPosts();
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "@id": `${absoluteUrl(PATH)}#blog`,
+      url: absoluteUrl(PATH),
+      name: "Language Zone German Learning Blog",
+      inLanguage: "en-IN",
+      publisher: { "@id": ORG_ID },
+      blogPost: posts.map((p) => ({
+        "@type": "BlogPosting",
+        headline: p.title,
+        url: absoluteUrl(postUrl(p.slug)),
+        datePublished: p.date,
+      })),
+    },
+    breadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: PATH },
+    ]),
+  ];
 
   return (
     <main>
+      <JsonLd data={jsonLd} />
       <PageHero crumbs={[{ label: "Home", href: "/" }, { label: "Blog" }]}>
         <PageTitle>German Learning Blog</PageTitle>
         <Lead>

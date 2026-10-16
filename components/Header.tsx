@@ -25,7 +25,6 @@ import {
   EMAIL,
   GERMAN_COURSE_URL,
   GERMAN_LEVELS,
-  PAY_URL,
   PHONE_PRIMARY,
   PHONE_SECONDARY,
   levelUrl,
@@ -33,9 +32,9 @@ import {
 
 const NAV = [
   {
-    href: "/about-us",
-    label: "About us",
-    match: (p: string) => p.startsWith("/about-us"),
+    href: "/about",
+    label: "About",
+    match: (p: string) => p.startsWith("/about"),
   },
   {
     href: "/blogs",
@@ -71,14 +70,6 @@ export default function Header() {
             <a href={`tel:${PHONE_PRIMARY.tel}`}>{PHONE_PRIMARY.label}</a>
             <a href={`tel:${PHONE_SECONDARY.tel}`}>{PHONE_SECONDARY.label}</a>
             <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-            <a
-              className="font-medium text-gold"
-              href={PAY_URL}
-              target="_blank"
-              rel="noopener"
-            >
-              Pay online
-            </a>
           </span>
         </div>
       </div>

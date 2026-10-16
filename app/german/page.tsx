@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import EnquiryButton from "@/components/EnquiryButton";
+import JsonLd from "@/components/JsonLd";
 import CallbackBand from "@/components/course/CallbackBand";
 import ExamTable from "@/components/course/ExamTable";
 import FaqSection from "@/components/course/FaqSection";
@@ -14,28 +15,45 @@ import {
 } from "@/components/course/Section";
 import { buttonVariants } from "@/components/ui/button";
 import { GERMAN_COURSE } from "@/lib/courses";
-import { GERMAN_COURSE_URL, GERMAN_LEVELS, PHONE_PRIMARY } from "@/lib/site";
+import { absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
+import {
+  GERMAN_COURSE_URL,
+  GERMAN_LEVELS,
+  PHONE_PRIMARY,
+  levelUrl,
+} from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 const { seo, hero, levelsSection, examSection, faq } = GERMAN_COURSE;
-const URL = `https://languagezone.in${GERMAN_COURSE_URL}`;
-
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: seo.title,
   description: seo.description,
   keywords: seo.keywords,
-  alternates: { canonical: URL },
-  openGraph: {
-    type: "website",
-    title: seo.title,
-    description: seo.description,
-    url: URL,
+  path: GERMAN_COURSE_URL,
+});
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "German courses in Dehradun, A1 to C2",
+    itemListElement: GERMAN_LEVELS.map((l, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: absoluteUrl(levelUrl(l.slug)),
+      name: `German ${l.code} course in Dehradun`,
+    })),
   },
-};
+  breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "German course", path: GERMAN_COURSE_URL },
+  ]),
+];
 
 export default function Page() {
   return (
     <main>
+      <JsonLd data={jsonLd} />
       <PageHero
         crumbs={[{ label: "Home", href: "/" }, { label: "German course" }]}
       >
