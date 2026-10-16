@@ -71,6 +71,57 @@ async function postEnquiry(name: string, number: string, query: string) {
   }
 }
 
+/**
+ * Validates and posts an enquiry, returning a message for inline display
+ * (used by the redesigned forms instead of the alert popup + page reload).
+ */
+export async function sendEnquiry(
+  name: string,
+  number: string,
+  query: string,
+): Promise<{ ok: boolean; message: string }> {
+  if (!NamePattern.test(name)) {
+    return { ok: false, message: "Please enter your name." };
+  }
+  if (!PhoneNumberPattern.test(number)) {
+    return {
+      ok: false,
+      message: "Please enter a valid 10-digit mobile number.",
+    };
+  }
+  if (!ENQUIRY_URL) {
+    console.error("NEXT_PUBLIC_ENQUIRY_URL is not set in .env");
+    return {
+      ok: false,
+      message: "Sorry, something went wrong. Please call +91 88821 40688.",
+    };
+  }
+  try {
+    const response = await fetch(ENQUIRY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name,
+        mobileNumber: Number(91 + number),
+        message: query,
+        page: window.location.pathname,
+        website: "languageZone",
+      }),
+    });
+    const res = await response.json().catch(() => null);
+    if (response.ok) {
+      return { ok: true, message: "Thank you. We will call you back soon." };
+    }
+    return { ok: false, message: res?.message || "Something went wrong!" };
+  } catch (err) {
+    console.error("API Error:", err);
+    return {
+      ok: false,
+      message: "Sorry, something went wrong. Please call +91 88821 40688.",
+    };
+  }
+}
+
 /** Shared name / number / (optional) query validation. Returns true when valid. */
 function validate(
   name: string,

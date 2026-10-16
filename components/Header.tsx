@@ -2,184 +2,170 @@
 
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import SiteDialog from "@/components/SiteDialog";
-import { closeDialog, openDialog } from "@/lib/dialogs";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import {
+  EMAIL,
+  GERMAN_COURSE_URL,
+  GERMAN_LEVELS,
+  OTHER_COURSES,
+  PAY_URL,
+  PHONE_PRIMARY,
+  PHONE_SECONDARY,
+} from "@/lib/site";
+
+const NAV = [
+  { href: "/", label: "Home", match: (p: string) => p === "/" },
+  { href: "/#about", label: "About us", match: () => false },
+  {
+    href: "/courses/blog",
+    label: "Blog",
+    match: (p: string) => p.startsWith("/courses/blog"),
+  },
+  {
+    href: "/courses/contact-us",
+    label: "Contact us",
+    match: (p: string) => p.startsWith("/courses/contact-us"),
+  },
+];
 
 export default function Header() {
+  const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+
+  const current = (active: boolean) =>
+    active ? { "aria-current": "page" as const } : {};
+  const coursesActive =
+    pathname.startsWith("/courses/") &&
+    !NAV.some((n) => n.href !== "/" && n.match(pathname));
+
   return (
     <>
-      <header className="main-header">
-        <div className="header-logo">
-          <Link href="/">
-            <img src="/images/logo.png" alt="logo" />
-          </Link>
-        </div>
-        <nav className="main-navigation">
-          <ul className="nav-list">
-            <li className="nav-item">
-              <Link href="/">Home</Link>
-            </li>
-            <li className="nav-item" id="courses-link">
-              <a href="#">Courses</a>
-              <div className="courses-dropdown-list">
-                <ul>
-                  <li className="dropdown-item">
-                    <Link href="/courses/ielts">IELTS</Link>
-                  </li>
-                  <li className="dropdown-item">
-                    <Link href="/courses/german">German</Link>
-                  </li>
-                  <li className="dropdown-item">
-                    <Link href="/courses/spanish">Spanish</Link>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li className="nav-item">
-              <Link href="/courses/blog">Blog</Link>
-            </li>
-            <li className="nav-item">
-              <Link href="/courses/contact-us">Contact us</Link>
-            </li>
-          </ul>
-        </nav>
-        <div className="contact-info">
-          <span className="contact-info__call">
-            <svg
-              version="1.0"
-              xmlns="http://www.w3.org/2000/svg"
-              width="23"
-              height="23"
-              viewBox="0 0 512.000000 512.000000"
-              preserveAspectRatio="xMidYMid meet"
-              onClick={() => openDialog("call")}
+      <div className="lz-tri" />
+      <div className="lz-topbar">
+        <div className="lz-wrap lz-tb-in">
+          <span>Race Course, Dehradun, Uttarakhand 248001</span>
+          <span className="lz-tb-r">
+            <a href={`tel:${PHONE_PRIMARY.tel}`}>{PHONE_PRIMARY.label}</a>
+            <a href={`tel:${PHONE_SECONDARY.tel}`}>{PHONE_SECONDARY.label}</a>
+            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+            <a
+              className="lz-gold"
+              href={PAY_URL}
+              target="_blank"
+              rel="noopener"
             >
-              <g
-                transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                fill="#4a46a2"
-                stroke="none"
-              >
-                <path
-                  d={
-                    "M2327 5109 c-325 -31 -613 -114 -906 -260 -260 -129 -450 -266 -665\n-477 -205 -203 -353 -408 -485 -673 -313 -628 -355 -1340 -120 -2004 88 -246\n263 -556 423 -750 241 -290 518 -510 847 -674 390 -194 805 -285 1229 -268\n381 16 712 100 1049 268 406 201 743 499 996 879 87 131 217 387 270 534 175\n478 200 1028 70 1523 -49 186 -92 300 -185 488 -130 263 -267 454 -478 669\n-531 538 -1297 817 -2045 745z m-650 -1219 c32 -12 517 -491 539 -532 34 -65\n27 -77 -155 -262 -92 -94 -176 -186 -185 -203 -38 -75 -30 -164 21 -241 167\n-248 607 -673 810 -782 46 -25 137 -27 191 -5 23 10 101 79 202 180 167 166\n193 184 248 170 34 -8 525 -494 548 -543 30 -64 -4 -118 -163 -257 -170 -149\n-359 -212 -553 -185 -261 36 -690 248 -1000 496 -116 93 -400 378 -492 494\n-208 261 -388 594 -454 835 -42 155 -24 317 53 475 42 85 59 108 176 227 71\n73 139 134 151 136 11 2 24 5 28 6 4 0 19 -4 35 -9z"
-                  }
-                />
-              </g>
-            </svg>
-            <span className="call-contact-no">
-              <a href="tel:8882140688">8882140688</a>{" "}
-              <a href="tel:8979544473">8979544473</a>
-            </span>
+              Pay online
+            </a>
           </span>
         </div>
-        <SiteDialog
-          name="call"
-          className="call-dialog-popup"
-          overlayClassName="call-dialog-backdrop"
-        >
-          <div className="inner_show_popop_call">
-            <div
-              className="close_show_popop_call"
-              onClick={() => closeDialog("call")}
+      </div>
+      <header className="lz-hdr">
+        <div className="lz-wrap lz-hdr-in">
+          <Link className="lz-brand" href="/" aria-label="Language Zone, home">
+            <img src="/images/logo.png" alt="Language Zone" />
+          </Link>
+
+          <nav className="lz-nav" aria-label="Main">
+            <Link href="/" {...current(pathname === "/")}>
+              Home
+            </Link>
+            <div className="lz-dd">
+              <Link href={GERMAN_COURSE_URL} {...current(coursesActive)}>
+                German course <span aria-hidden="true">▾</span>
+              </Link>
+              <div className="lz-dd-menu">
+                {GERMAN_LEVELS.map((l) => (
+                  <Link key={l.code} href={GERMAN_COURSE_URL}>
+                    <b>{l.code}</b> {l.name}
+                  </Link>
+                ))}
+                <p className="lz-dd-label">Other courses</p>
+                {OTHER_COURSES.map((c) => (
+                  <Link key={c.href} href={c.href}>
+                    {c.label}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            {NAV.slice(1).map((n) => (
+              <Link key={n.href} href={n.href} {...current(n.match(pathname))}>
+                {n.label}
+              </Link>
+            ))}
+          </nav>
+
+          <Link
+            className="lz-btn lz-btn-gold lz-hdr-cta"
+            href="/courses/contact-us"
+          >
+            Check your level
+          </Link>
+
+          <button
+            className="lz-menu-btn"
+            type="button"
+            aria-expanded={open}
+            aria-controls="lz-drawer"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen(!open)}
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden="true"
             >
-              <svg
-                width="25"
-                height="25"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g id="SVGRepo_bgCarrier" strokeWidth="0" />
-                <g
-                  id="SVGRepo_tracerCarrier"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <g id="SVGRepo_iconCarrier">
-                  <path
-                    d="M12 2C6.49 2 2 6.49 2 12C2 17.51 6.49 22 12 22C17.51 22 22 17.51 22 12C22 6.49 17.51 2 12 2ZM15.36 14.3C15.65 14.59 15.65 15.07 15.36 15.36C15.21 15.51 15.02 15.58 14.83 15.58C14.64 15.58 14.45 15.51 14.3 15.36L12 13.06L9.7 15.36C9.55 15.51 9.36 15.58 9.17 15.58C8.98 15.58 8.79 15.51 8.64 15.36C8.35 15.07 8.35 14.59 8.64 14.3L10.94 12L8.64 9.7C8.35 9.41 8.35 8.93 8.64 8.64C8.93 8.35 9.41 8.35 9.7 8.64L12 10.94L14.3 8.64C14.59 8.35 15.07 8.35 15.36 8.64C15.65 8.93 15.65 9.41 15.36 9.7L13.06 12L15.36 14.3Z"
-                    fill="#33308b"
-                  />
-                </g>
-              </svg>
+              {open ? (
+                <path d="M6 6l12 12M18 6L6 18" />
+              ) : (
+                <path d="M4 7h16M4 12h16M4 17h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        <nav
+          className="lz-drawer"
+          id="lz-drawer"
+          aria-label="Main"
+          hidden={!open}
+          // close the drawer after any link inside it is followed
+          onClick={(e) => {
+            if ((e.target as HTMLElement).closest("a")) setOpen(false);
+          }}
+        >
+          <div className="lz-wrap">
+            <Link href="/" {...current(pathname === "/")}>
+              Home
+            </Link>
+            <Link href={GERMAN_COURSE_URL} {...current(coursesActive)}>
+              German course
+            </Link>
+            <div className="lz-dl">
+              {GERMAN_LEVELS.map((l) => (
+                <Link key={l.code} href={GERMAN_COURSE_URL}>
+                  <b>{l.code}</b>
+                  <span>{l.name}</span>
+                </Link>
+              ))}
+              {OTHER_COURSES.map((c) => (
+                <Link key={c.href} href={c.href}>
+                  <span>{c.label}</span>
+                </Link>
+              ))}
             </div>
-            <div className="call_svg_popup" onClick={() => closeDialog("call")}>
-              <span className="svg_call_popup_mb">
-                <svg
-                  version="1.0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="17"
-                  height="17"
-                  viewBox="0 0 512.000000 512.000000"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <g
-                    transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                    fill="#4a46a2"
-                    stroke="none"
-                  >
-                    <path
-                      d={
-                        "M2327 5109 c-325 -31 -613 -114 -906 -260 -260 -129 -450 -266 -665\n-477 -205 -203 -353 -408 -485 -673 -313 -628 -355 -1340 -120 -2004 88 -246\n263 -556 423 -750 241 -290 518 -510 847 -674 390 -194 805 -285 1229 -268\n381 16 712 100 1049 268 406 201 743 499 996 879 87 131 217 387 270 534 175\n478 200 1028 70 1523 -49 186 -92 300 -185 488 -130 263 -267 454 -478 669\n-531 538 -1297 817 -2045 745z m-650 -1219 c32 -12 517 -491 539 -532 34 -65\n27 -77 -155 -262 -92 -94 -176 -186 -185 -203 -38 -75 -30 -164 21 -241 167\n-248 607 -673 810 -782 46 -25 137 -27 191 -5 23 10 101 79 202 180 167 166\n193 184 248 170 34 -8 525 -494 548 -543 30 -64 -4 -118 -163 -257 -170 -149\n-359 -212 -553 -185 -261 36 -690 248 -1000 496 -116 93 -400 378 -492 494\n-208 261 -388 594 -454 835 -42 155 -24 317 53 475 42 85 59 108 176 227 71\n73 139 134 151 136 11 2 24 5 28 6 4 0 19 -4 35 -9z"
-                      }
-                    />
-                  </g>
-                </svg>
-              </span>{" "}
-              <a href="tel:8882140688">+91-8882140688</a>
-            </div>
-            <div className="call_svg_popup" onClick={() => closeDialog("call")}>
-              <span className="svg_call_popup_mb">
-                <svg
-                  version="1.0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="17"
-                  height="17"
-                  viewBox="0 0 512.000000 512.000000"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <g
-                    transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                    fill="#4a46a2"
-                    stroke="none"
-                  >
-                    <path
-                      d={
-                        "M2327 5109 c-325 -31 -613 -114 -906 -260 -260 -129 -450 -266 -665\n-477 -205 -203 -353 -408 -485 -673 -313 -628 -355 -1340 -120 -2004 88 -246\n263 -556 423 -750 241 -290 518 -510 847 -674 390 -194 805 -285 1229 -268\n381 16 712 100 1049 268 406 201 743 499 996 879 87 131 217 387 270 534 175\n478 200 1028 70 1523 -49 186 -92 300 -185 488 -130 263 -267 454 -478 669\n-531 538 -1297 817 -2045 745z m-650 -1219 c32 -12 517 -491 539 -532 34 -65\n27 -77 -155 -262 -92 -94 -176 -186 -185 -203 -38 -75 -30 -164 21 -241 167\n-248 607 -673 810 -782 46 -25 137 -27 191 -5 23 10 101 79 202 180 167 166\n193 184 248 170 34 -8 525 -494 548 -543 30 -64 -4 -118 -163 -257 -170 -149\n-359 -212 -553 -185 -261 36 -690 248 -1000 496 -116 93 -400 378 -492 494\n-208 261 -388 594 -454 835 -42 155 -24 317 53 475 42 85 59 108 176 227 71\n73 139 134 151 136 11 2 24 5 28 6 4 0 19 -4 35 -9z"
-                      }
-                    />
-                  </g>
-                </svg>
-              </span>{" "}
-              <a href="tel:8979544473">+91 8979544473</a>
-            </div>
-            <div className="call_svg_popup" onClick={() => closeDialog("call")}>
-              <span className="svg_call_popup_mb">
-                <svg
-                  version="1.0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="17"
-                  height="17"
-                  viewBox="0 0 512.000000 512.000000"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <g
-                    transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                    fill="#4a46a2"
-                    stroke="none"
-                  >
-                    <path
-                      d={
-                        "M2327 5109 c-325 -31 -613 -114 -906 -260 -260 -129 -450 -266 -665\n-477 -205 -203 -353 -408 -485 -673 -313 -628 -355 -1340 -120 -2004 88 -246\n263 -556 423 -750 241 -290 518 -510 847 -674 390 -194 805 -285 1229 -268\n381 16 712 100 1049 268 406 201 743 499 996 879 87 131 217 387 270 534 175\n478 200 1028 70 1523 -49 186 -92 300 -185 488 -130 263 -267 454 -478 669\n-531 538 -1297 817 -2045 745z m-650 -1219 c32 -12 517 -491 539 -532 34 -65\n27 -77 -155 -262 -92 -94 -176 -186 -185 -203 -38 -75 -30 -164 21 -241 167\n-248 607 -673 810 -782 46 -25 137 -27 191 -5 23 10 101 79 202 180 167 166\n193 184 248 170 34 -8 525 -494 548 -543 30 -64 -4 -118 -163 -257 -170 -149\n-359 -212 -553 -185 -261 36 -690 248 -1000 496 -116 93 -400 378 -492 494\n-208 261 -388 594 -454 835 -42 155 -24 317 53 475 42 85 59 108 176 227 71\n73 139 134 151 136 11 2 24 5 28 6 4 0 19 -4 35 -9z"
-                      }
-                    />
-                  </g>
-                </svg>
-              </span>{" "}
-              <a href="tel:7351676494">+91 7351676494</a>
-            </div>
+            {NAV.slice(1).map((n) => (
+              <Link key={n.href} href={n.href} {...current(n.match(pathname))}>
+                {n.label}
+              </Link>
+            ))}
           </div>
-        </SiteDialog>
+        </nav>
       </header>
     </>
   );

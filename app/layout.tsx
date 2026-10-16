@@ -1,16 +1,13 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import "@/styles/footer.css";
-import "@/styles/header.css";
 import "@/styles/main.css";
-import "@/styles/tabnav.css";
 import "@/styles/popup.css";
 import "@/styles/course_list.css";
 import "@/styles/courses/banner.css";
+import "@/styles/site.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import TabNav from "@/components/TabNav";
 import CoursesList from "@/components/CoursesList";
 import Popup from "@/components/Popup";
 import SiteScripts from "@/components/SiteScripts";
@@ -68,7 +65,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Outfit&family=Readex+Pro:wght@200;400&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Montserrat:wght@400;600;700&family=Outfit&family=Readex+Pro:wght@200;300;400;500;600&display=swap"
         />
       </head>
       <body>
@@ -90,7 +87,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
-        <TabNav />
         <CoursesList />
         <Popup />
         <SiteScripts />
