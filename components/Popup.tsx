@@ -1,280 +1,154 @@
 "use client";
 
-import SiteDialog from "@/components/SiteDialog";
-import SiteSheet from "@/components/SiteSheet";
-import { closeDialog, openDialog, useDialog } from "@/lib/dialogs";
-import { DialogClose } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-
+import { usePathname } from "next/navigation";
+import { useRef } from "react";
+import EnquiryForm from "@/components/EnquiryForm";
+import { MessageSquareIcon } from "lucide-react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { useDialog } from "@/lib/dialogs";
 import {
-  hide_pop_error_box,
-  submitBottomForm,
-  submit_course_curriculam,
-  submit_query_form,
-} from "@/lib/legacy";
+  openEnquiry,
+  useEnquiryState,
+  type EnquiryVariant,
+} from "@/lib/enquiryDialog";
+import {
+  GERMAN_LEVELS,
+  PHONE_PRIMARY,
+  PHONE_SECONDARY,
+  levelLabel,
+} from "@/lib/site";
+
+const VARIANTS: Record<
+  EnquiryVariant,
+  {
+    eyebrow: string;
+    title: string;
+    text: string;
+    formTitle: string;
+    submit: string;
+    context?: string;
+  }
+> = {
+  query: {
+    eyebrow: "Contact us",
+    title: "Talk to a trainer",
+    text: "Tell us your goal and we will suggest the right level and batch.",
+    formTitle: "Request a call back",
+    submit: "Request a call back",
+  },
+  enroll: {
+    eyebrow: "Enrol now",
+    title: "Reserve your seat",
+    text: "Share your details and our counsellor will confirm the next batch and fees.",
+    formTitle: "Apply to enrol",
+    submit: "Apply now",
+    context: "Enrol request",
+  },
+  curriculum: {
+    eyebrow: "Course curriculum",
+    title: "Get the full syllabus",
+    text: "Verify your number and a trainer will share the detailed curriculum with you.",
+    formTitle: "Get the curriculum",
+    submit: "Get the curriculum",
+    context: "Download curriculum request",
+  },
+};
+
+const DIALOG_POINTS = [
+  "Goethe-Zertifikat preparation, A1 to C2",
+  "Online and offline batches",
+  "Certified trainers in Dehradun",
+];
+
+// preselect the level on a level page, e.g. /german/b1
+function courseFor(pathname: string) {
+  const slug = pathname.match(/^\/german\/([a-c][12])\b/)?.[1];
+  const level = GERMAN_LEVELS.find((l) => l.slug === slug);
+  return level ? levelLabel(level) : "";
+}
 
 export default function Popup() {
-  const [queryOpen] = useDialog("query");
+  const pathname = usePathname();
+  const [open, setOpen] = useDialog("enquiry");
+  const { variant: current, course } = useEnquiryState();
+  const formRef = useRef<HTMLDivElement>(null);
+  const v = VARIANTS[current];
 
   return (
     <>
-      <div className="bottom-strip">
-        <div className="bottom-strip-first-container">
-          <div className="whatsapp_icons_div">
-            <a
-              href="https://api.whatsapp.com/send?phone=918882140688"
-              target="_blank"
-              className="whatsapp_icons_inner"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="#fff"
-                className="bi bi-whatsapp"
-                viewBox="0 0 16 16"
-              >
-                <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
-              </svg>
-            </a>
-          </div>
-        </div>
-        <div
-          className="drop_query"
-          style={
-            queryOpen ? { transition: ".5s ease", right: "-100%" } : undefined
+      {!open && (
+        <button
+          type="button"
+          onClick={() => openEnquiry("query")}
+          aria-haspopup="dialog"
+          className="group fixed top-1/2 right-0 z-30 hidden -translate-y-1/2 flex-col items-center gap-3 rounded-l-2xl bg-ink px-2.5 pt-4.5 pb-3.5 text-white shadow-[-6px_8px_24px_rgba(20,20,58,0.22)] transition-all hover:bg-indigo hover:pr-3.5 md:flex"
+        >
+          {/* red / gold edge, echoing the flag stripe */}
+          <span className="absolute inset-y-3.5 left-0 w-[3px] rounded-r bg-[linear-gradient(var(--color-brand-red)_0_50%,var(--color-gold)_50%_100%)]" />
+          <span className="text-[13px] font-semibold tracking-[0.14em] uppercase [writing-mode:vertical-rl]">
+            Contact us
+          </span>
+          <span className="flex size-8 items-center justify-center rounded-full bg-gold text-ink">
+            <MessageSquareIcon className="size-4" aria-hidden="true" />
+          </span>
+        </button>
+      )}
+
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent
+          // start on the first form field, not the phone links in the side panel
+          initialFocus={() =>
+            formRef.current?.querySelector<HTMLElement>("input") ?? true
           }
-          onClick={() => openDialog("query")}
+          className="flex max-h-[calc(100dvh-2rem)] gap-0 overflow-hidden rounded-3xl p-0 ring-0 shadow-[0_30px_80px_rgba(20,20,58,0.35)] sm:max-w-[880px] max-md:top-auto max-md:bottom-0 max-md:max-h-[92dvh] max-md:max-w-full max-md:translate-y-0 max-md:rounded-b-none"
         >
-          <p className="for-pc">drop us a query</p>
-          <p className="for-mobile">Call Back</p>
-          <p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="25"
-              fill="#fff"
-              className="rotate_svg"
-              viewBox="0 0 256 256"
-              style={{ transform: "rotate(180deg)" }}
-            >
-              <path d="M216.49,168.49a12,12,0,0,1-17,0L128,97,56.49,168.49a12,12,0,0,1-17-17l80-80a12,12,0,0,1,17,0l80,80A12,12,0,0,1,216.49,168.49Z" />
-            </svg>
-          </p>
-        </div>
-      </div>
-      <SiteSheet
-        name="query"
-        side="right"
-        modal={false}
-        className="drop_query_form"
-      >
-        <div
-          className="drop_query_form_box"
-          onClick={() => closeDialog("query")}
-        >
-          <p>drop us a query</p>
-          <p>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              style={{ transform: "rotate(180)" }}
-              height="25"
-              fill="#fff"
-              viewBox="0 0 256 256"
-            >
-              <path d="M216.49,104.49l-80,80a12,12,0,0,1-17,0l-80-80a12,12,0,0,1,17-17L128,159l71.51-71.52a12,12,0,0,1,17,17Z" />
-            </svg>
-          </p>
-        </div>
-        <form action="/submit_query" className="query_form" method="post">
-          <Label unstyled htmlFor="name">
-            Name *
-          </Label>
-          <Input
-            unstyled
-            type="text"
-            name=""
-            id="bottom_form_username"
-            placeholder="Enter Name"
-          />
-          <Label unstyled htmlFor="contact">
-            Contact *
-          </Label>
-          <Input
-            unstyled
-            type="text"
-            name="contact"
-            id="bottom_form_usernumber"
-            placeholder="Enter Contact "
-          />
-          <Label unstyled htmlFor="email">
-            Query *
-          </Label>
-          <Input
-            unstyled
-            type="text"
-            name="query"
-            id="bottom_form_userquery"
-            placeholder="Enter Query"
-          />{" "}
-          <Input
-            unstyled
-            type="submit"
-            value="Get a Callback"
-            style={{ cursor: "pointer" }}
-            onClick={(event) => {
-              submitBottomForm(event);
-            }}
-          />
-        </form>
-      </SiteSheet>
-      <SiteDialog name="download_curriculam">
-        <div className="inside_pop_up_form">
-          <div className="form_enquiry_course">
-            <DialogClose render={<p className="hide_pop_up" />}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="26"
-                height="26"
-                fill="#56429a"
-                viewBox="0 0 256 256"
-              >
-                <path d="M165.66,101.66,139.31,128l26.35,26.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z" />
-              </svg>
-            </DialogClose>
-            <form className="form_course ">
-              <h2 className="form_enquiry_caption_course">Download Now</h2>
-              <div className="Input_field_enquiry_course">
-                <Label unstyled htmlFor="name" className="label_course">
-                  Name*
-                </Label>
-                <Input
-                  unstyled
-                  id="download_course_curriculam_name"
-                  type="text"
-                  required
-                  name="name"
-                  className="input_course"
-                  placeholder="Please Enter Your Name"
-                />
-              </div>
-              <div className="Input_field_enquiry_course">
-                <Label unstyled htmlFor="name" className="label_course">
-                  Phone No*
-                </Label>
-                <Input
-                  unstyled
-                  required
-                  name="name"
-                  className="input_course"
-                  placeholder="Phone No."
-                  id="download_course_curriculam_phone_no"
-                />
-              </div>
-              <div
-                className="Input_field_enquiry_course"
-                onClick={(event) => {
-                  submit_course_curriculam(event, "download_curriculam");
-                }}
-              >
-                <Button unstyled className="btn_course">
-                  Submit
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </SiteDialog>
-      <div className="error_pop_up_box ">
-        <div
-          className="error_inside_box"
-          onClick={() => {
-            hide_pop_error_box("error_pop_up_box");
-          }}
-        >
-          <p className="your_msg" />
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            fill="#721c24"
-            viewBox="0 0 256 256"
+          <aside className="hidden basis-[42%] flex-col bg-ink px-8 py-9 text-white md:flex">
+            <div className="tri-stripe" />
+            <p className="mt-5.5 text-[13px] font-semibold tracking-widest text-gold uppercase">
+              {v.eyebrow}
+            </p>
+            <h2 className="mt-2.5 font-disp text-3xl leading-tight">
+              {v.title}
+            </h2>
+            <p className="mt-3 text-on-ink">{v.text}</p>
+            <ul className="mt-5.5 space-y-2.5">
+              {DIALOG_POINTS.map((t) => (
+                <li key={t} className="flex gap-3 text-on-ink-soft">
+                  <span className="mt-2 size-[11px] shrink-0 rounded-[3px] bg-gold shadow-[inset_0_-3px_0_var(--color-brand-red)]" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-auto pt-5.5 text-sm text-on-ink">
+              Prefer to talk now?
+              {[PHONE_PRIMARY, PHONE_SECONDARY].map((p) => (
+                <a
+                  key={p.tel}
+                  href={`tel:${p.tel}`}
+                  className="mt-0.5 block text-lg font-semibold text-gold"
+                >
+                  {p.label}
+                </a>
+              ))}
+            </p>
+          </aside>
+          <div
+            ref={formRef}
+            className="min-w-0 flex-1 overflow-y-auto px-5 pt-6.5 pb-[calc(24px+env(safe-area-inset-bottom,0px))] md:p-8"
           >
-            <path d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z" />
-          </svg>
-        </div>
-      </div>
-      <SiteDialog name="pop_up_form">
-        <div className="inside_pop_up_form">
-          <div className="form_enquiry_course">
-            <DialogClose render={<p className="hide_pop_up" />}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="26"
-                height="26"
-                fill="#56429a"
-                viewBox="0 0 256 256"
-              >
-                <path d="M165.66,101.66,139.31,128l26.35,26.34a8,8,0,0,1-11.32,11.32L128,139.31l-26.34,26.35a8,8,0,0,1-11.32-11.32L116.69,128,90.34,101.66a8,8,0,0,1,11.32-11.32L128,116.69l26.34-26.35a8,8,0,0,1,11.32,11.32ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z" />
-              </svg>
-            </DialogClose>
-            <form className="form_course ">
-              <h2 className="form_enquiry_caption_course">Apply To Enroll</h2>
-              <div className="Input_field_enquiry_course">
-                <Label unstyled htmlFor="name" className="label_course">
-                  Name*
-                </Label>
-                <Input
-                  unstyled
-                  id="customize_training_username"
-                  type="text"
-                  required
-                  name="name"
-                  className="input_course"
-                  placeholder="Please enter your name"
-                />
-              </div>
-              <div className="Input_field_enquiry_course">
-                <Label unstyled htmlFor="name" className="label_course">
-                  Phone No*
-                </Label>
-                <Input
-                  unstyled
-                  required
-                  name="name"
-                  className="input_course"
-                  placeholder="Phone No."
-                  id="customize_training_number"
-                />
-              </div>
-              <div className="Input_field_enquiry_course">
-                <Label unstyled htmlFor="quiry" className="label_course">
-                  Query
-                </Label>
-                <Input
-                  unstyled
-                  className="input_course"
-                  placeholder="Enter your query"
-                  id="coustmize_training_query"
-                />
-              </div>
-              <div
-                className="Input_field_enquiry_course"
-                onClick={(event) => {
-                  submit_query_form(event, "pop_up_form");
-                }}
-              >
-                <Button unstyled className="btn_course">
-                  Submit
-                </Button>
-              </div>
-            </form>
+            <DialogTitle className="sr-only">{v.formTitle}</DialogTitle>
+            <EnquiryForm
+              key={`${current}-${course ?? ""}`}
+              title={v.formTitle}
+              subtitle="We usually call back within a few working hours."
+              defaultCourse={course ?? courseFor(pathname)}
+              showMessage={current === "query"}
+              context={v.context}
+              submitLabel={v.submit}
+            />
           </div>
-        </div>
-      </SiteDialog>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

@@ -2,32 +2,21 @@ import { Accordion as AccordionPrimitive } from "@base-ui/react/accordion";
 import { cn } from "@/lib/utils";
 import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 
-/** `unstyled` skips the shadcn look so only the passed `className` (the site's own CSS) applies. */
-type Unstyled = { unstyled?: boolean };
-
-function Accordion({
-  className,
-  unstyled = false,
-  ...props
-}: AccordionPrimitive.Root.Props & Unstyled) {
+function Accordion({ className, ...props }: AccordionPrimitive.Root.Props) {
   return (
     <AccordionPrimitive.Root
       data-slot="accordion"
-      className={unstyled ? className : cn("flex w-full flex-col", className)}
+      className={cn("flex w-full flex-col", className)}
       {...props}
     />
   );
 }
 
-function AccordionItem({
-  className,
-  unstyled = false,
-  ...props
-}: AccordionPrimitive.Item.Props & Unstyled) {
+function AccordionItem({ className, ...props }: AccordionPrimitive.Item.Props) {
   return (
     <AccordionPrimitive.Item
       data-slot="accordion-item"
-      className={unstyled ? className : cn("not-last:border-b", className)}
+      className={cn("not-last:border-b", className)}
       {...props}
     />
   );
@@ -36,22 +25,8 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   children,
-  unstyled = false,
   ...props
-}: AccordionPrimitive.Trigger.Props & Unstyled) {
-  if (unstyled) {
-    return (
-      <AccordionPrimitive.Header render={<div className="contents" />}>
-        <AccordionPrimitive.Trigger
-          data-slot="accordion-trigger"
-          className={className}
-          {...props}
-        >
-          {children}
-        </AccordionPrimitive.Trigger>
-      </AccordionPrimitive.Header>
-    );
-  }
+}: AccordionPrimitive.Trigger.Props) {
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
@@ -79,21 +54,8 @@ function AccordionTrigger({
 function AccordionContent({
   className,
   children,
-  unstyled = false,
   ...props
-}: AccordionPrimitive.Panel.Props & Unstyled) {
-  if (unstyled) {
-    return (
-      <AccordionPrimitive.Panel
-        data-slot="accordion-content"
-        keepMounted
-        className={className}
-        {...props}
-      >
-        {children}
-      </AccordionPrimitive.Panel>
-    );
-  }
+}: AccordionPrimitive.Panel.Props) {
   return (
     <AccordionPrimitive.Panel
       data-slot="accordion-content"

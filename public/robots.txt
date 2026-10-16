@@ -4,4 +4,4 @@ Allow:   /
 Allow: /sitemap.xml
 Allow: /sitemap.html
 
-Sitemap:     https://www.languagezone.in//sitemap.xml
+Sitemap: https://languagezone.in/sitemap.xml

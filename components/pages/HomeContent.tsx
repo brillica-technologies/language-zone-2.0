@@ -1,429 +1,267 @@
-"use client";
-
+import Link from "next/link";
+import CallbackBand from "@/components/course/CallbackBand";
+import ExamTable from "@/components/course/ExamTable";
+import FaqSection from "@/components/course/FaqSection";
+import LevelCard from "@/components/course/LevelCard";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+  Band,
+  CardGrid,
+  Eyebrow,
+  Lead,
+  SectionHead,
+} from "@/components/course/Section";
+import { buttonVariants } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import home from "@/data/home.json";
+import PostCard from "@/components/blog/PostCard";
+import type { Post } from "@/lib/blog";
+import { GERMAN_COURSE_URL, GERMAN_LEVELS, levelUrl } from "@/lib/site";
+import { cn } from "@/lib/utils";
 
-/* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { show_query_form } from "@/lib/legacy";
+// A1 → C2 ladder bar heights in px, phone and desktop (from the design)
+const LADDER = [
+  [66, 84],
+  [90, 124],
+  [114, 164],
+  [138, 204],
+  [162, 244],
+  [186, 284],
+];
 
-type Course = "German" | "Spanish" | "IELTS";
+const TRUST = [
+  "Goethe-Zertifikat preparation",
+  "Online and offline batches",
+  "Race Course, Dehradun",
+];
 
-export default function HomeContent() {
-  const router = useRouter();
-  const [activeCourse, setActiveCourse] = useState<Course>("German");
-  const [selectedCourse, setSelectedCourse] = useState("");
-  const [readMoreOpen, setReadMoreOpen] = useState(false);
+const card = "rounded-[20px] p-5 text-base ring-line md:p-7";
 
-  // hero "Find a Course" button: go to the chosen course page, then reset the select
-  const findCourse = () => {
-    if (selectedCourse) {
-      router.push(`/courses/${selectedCourse}`);
-      setSelectedCourse("");
-    }
-  };
-
+export default function HomeContent({ posts }: { posts: Post[] }) {
   return (
-    <>
-      {/* index.css of the original imports Poppins, only the home page loads it */}
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap"
-        precedence="default"
-      />
-      <section className="hero-section">
-        <div className="hero-section-part1">
-          <div className="hero-section-desc">
-            <div className="hero-section-desc-box">
-              <h1 className="hero-section-desc__title">Language Zone</h1>
-              <p className="hero-section-desc__info">
-                Easy Language
-                <br /> Learning !
-              </p>
+    <main>
+      <section className="bg-paper">
+        <div className="page-wrap flex flex-wrap items-center gap-7 py-8 md:gap-14 md:py-18">
+          <div className="min-w-0 flex-[1_1_480px]">
+            <Eyebrow>German language institute · Dehradun</Eyebrow>
+            <h1 className="mt-3.5 font-disp text-4xl leading-[1.06] md:text-[58px]">
+              German Language Course in Dehradun
+            </h1>
+            <Lead>
+              Learn German from A1 to C2 with certified trainers. Every level
+              follows its Goethe-Zertifikat, so your classes end with a
+              certificate that universities, employers and embassies recognise.
+            </Lead>
+            <div className="mt-6.5 flex flex-wrap gap-3">
+              <Link
+                href="/contact-us"
+                className={cn(
+                  buttonVariants({ variant: "gold", size: "pill" }),
+                  "max-md:w-full",
+                )}
+              >
+                Check your level
+              </Link>
+              <Link
+                href={GERMAN_COURSE_URL}
+                className={cn(
+                  buttonVariants({ variant: "outline-ink", size: "pill" }),
+                  "max-md:w-full",
+                )}
+              >
+                View all levels
+              </Link>
             </div>
-            <div className="hero-section-desc__actions">
-              <div className="banner-form">
-                <Select
-                  name="course"
-                  items={[
-                    { value: "german", label: "German" },
-                    { value: "ielts", label: "IELTS" },
-                    { value: "spanish", label: "Spanish" },
-                  ]}
-                  value={selectedCourse || null}
-                  onValueChange={(value) => setSelectedCourse(value ?? "")}
+            <ul className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm font-medium text-navy">
+              {TRUST.map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-brand-red" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="min-w-0 flex-[1_1_480px]">
+            <p className="mb-4 font-disp text-xl text-navy">
+              Guten Tag! Your path from A1 to C2
+            </p>
+            <ol
+              aria-label="German levels from A1 to C2"
+              className="flex items-end gap-1.5 md:min-h-[330px] md:gap-2"
+            >
+              {GERMAN_LEVELS.map((l, i) => (
+                <li
+                  key={l.slug}
+                  className="h-(--h-sm) min-w-0 flex-1 md:h-(--h)"
+                  style={
+                    {
+                      "--h-sm": `${LADDER[i][0]}px`,
+                      "--h": `${LADDER[i][1]}px`,
+                    } as React.CSSProperties
+                  }
                 >
-                  <SelectTrigger className="hero-select-trigger">
-                    <SelectValue placeholder="Language" />
-                  </SelectTrigger>
-                  <SelectContent
-                    className="hero-select-content"
-                    alignItemWithTrigger={false}
+                  <Link
+                    href={levelUrl(l.slug)}
+                    className="flex h-full flex-col justify-end overflow-hidden rounded-t-[14px] rounded-b-[4px] px-1.5 py-2 leading-tight transition-transform hover:-translate-y-1 md:px-2.5 md:py-3"
+                    style={{ background: l.bg, color: l.fg }}
                   >
-                    <SelectItem className="hero-select-item" value="german">
-                      German
-                    </SelectItem>
-                    <SelectItem className="hero-select-item" value="ielts">
-                      IELTS
-                    </SelectItem>
-                    <SelectItem className="hero-select-item" value="spanish">
-                      Spanish
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button unstyled id="find-course-button" onClick={findCourse}>
-                  Find a Course
-                </Button>
-              </div>
-            </div>
-          </div>
-          <div className="hero-image">
-            <img src="/images/Hero.jpeg" alt="hero-image" />
-          </div>
-        </div>
-        <div className="hero-section-part2">
-          <span>Our Courses are Mapped to : &nbsp;&nbsp;</span>
-          <div className="home-image-container">
-            <img
-              src="/images/GOETHE-logo.png"
-              alt="GOETHE-logo"
-              style={{ width: "30%", height: "96%" }}
-            />{" "}
-            <span className="icon-separator">|</span>{" "}
-            <img
-              src="/images/DELE-logo.png"
-              alt="DELE-logo"
-              style={{ width: "20%", height: "80%" }}
-            />{" "}
-            <span className="icon-separator">|</span>{" "}
-            <img
-              src="/images/IELTS-flag.png"
-              alt="IELTS-logo"
-              style={{ width: "30%" }}
-            />
+                    <b className="font-disp text-xl md:text-2xl">{l.code}</b>
+                    <span className="mt-1 hidden text-xs font-medium hyphens-auto md:block">
+                      {l.name}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
           </div>
         </div>
       </section>
-      <section className="our-courses-section">
-        <div className="our-courses__heading">
-          <h1>Our Courses</h1>
-        </div>
-        <video autoPlay loop muted id="course-video" key={activeCourse}>
-          <source
-            src={`/images/${activeCourse.toLowerCase()}_flag.mp4`}
-            type="video/mp4"
-          />{" "}
-          Your browser does not support the video tag.
-        </video>
-        <div className="our-courses__tabs-block">
-          <div className="our-courses__tab">
-            <Button
-              unstyled
-              className={`tab-link${activeCourse === "German" ? " active" : ""}`}
-              onClick={() => setActiveCourse("German")}
-              id="defaultOpenCourse"
-            >
-              <img src="/images/german-flag.png" alt="german-flag" />{" "}
-              <span>German</span>
-            </Button>
-            <Button
-              unstyled
-              className={`tab-link${activeCourse === "Spanish" ? " active" : ""}`}
-              onClick={() => setActiveCourse("Spanish")}
-            >
-              <img src="/images/spanish-flag.png" alt="spanish-flag" />{" "}
-              <span>Spanish</span>
-            </Button>
-            <Button
-              unstyled
-              className={`tab-link${activeCourse === "IELTS" ? " active" : ""}`}
-              onClick={() => setActiveCourse("IELTS")}
-            >
-              <img src="/images/IELTS-flag.png" alt="IELTS-flag" />{" "}
-              <span>IELTS</span>
-            </Button>
-          </div>
-          <div
-            className="tab-content"
-            id="German"
-            style={{ display: activeCourse === "German" ? "block" : "none" }}
-          >
-            <p>
-              Start your training with our transformative German language course
-              in Dehradun. We provide comprehensive Language Training in
-              Dehradun, ensuring proficiency and cultural understanding. This
-              specialized course prepares you for the Goethe Certification,
-              offering internationally recognized credentials. With dedicated
-              instructors and immersive experiences, our German language
-              training caters to all skill levels, providing a dynamic path to
-              linguistic mastery. Join LanguageZone for a personalized and
-              impactful German language course, unlocking a world of
-              opportunities.
-            </p>
-          </div>
-          <div
-            className="tab-content"
-            id="Spanish"
-            style={{ display: activeCourse === "Spanish" ? "block" : "none" }}
-          >
-            <p>
-              Start your language journey with our immersive Spanish language
-              training in Dehradun. Providing extensive language training, we
-              guarantee proficiency and cultural understanding. This specialized
-              course led to the internationally recognized Diplomas de Español
-              como Lengua Extranjera - DELE certification. With dedicated
-              trainers and captivating experiences, our Spanish language
-              training caters to different proficiency levels, providing a
-              dynamic path to linguistic mastery.
-            </p>
-          </div>
-          <div
-            className="tab-content"
-            id="IELTS"
-            style={{ display: activeCourse === "IELTS" ? "block" : "none" }}
-          >
-            <p>
-              We offer specialized training to help you achieve success in the
-              IELTS exam our expert-led IELTS Training in Dehradun. This
-              specialized training guides you toward achieving the coveted IELTS
-              certification. Our comprehensive IELTS preparation course is
-              designed to equip you with the skills and strategies needed to
-              excel in all four sections of the test: Reading, Writing,
-              Listening, and Speaking. Led by experienced instructors
-              well-versed in the nuances of the IELTS exam. Whether you're
-              aiming for academic or general training, our tailored programs
-              cater to diverse needs and proficiency levels. Join us not to just
-              prepare for IELTS but to confidently navigate each section,
-              ensuring you're well-prepared for success in this globally
-              recognized English language proficiency test. Elevate your IELTS
-              scores and unlock doors to a world of academic and professional
-              opportunities with LanguageZone expert IELTS training.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section className="about_us_section_main_div">
-        <div className="industry_first_div">
-          <h2 className="about_us_section_heading">
-            <span className="span1">About</span>{" "}
-            <span className="span2">Us</span>
-          </h2>
-          <p className="about_us_section_text">
-            Welcome to LanguageZone, the leading provider of language courses in
-            Dehradun. At LanguageZone, our primary focus is to deliver
-            exceptional language training by offering customized Foreign
-            Language Courses In Dehradun to meet the specific requirements of
-            the individuals. Our team of certified trainers specializes in
-            Goethe, DELF, DELE, IELTS, and JLPT certifications, and is committed
-            to guiding you throughout your language-learning journey. we excel
-            in providing comprehensive German language training, preparing you
-            for the prestigious Goethe Certification.
-          </p>
-          <details>
-            <summary
-              className="about_us_section_text"
-              style={
-                readMoreOpen
-                  ? { position: "absolute", bottom: "-10%" }
-                  : { position: "static" }
-              }
-              onClick={() => setReadMoreOpen(!readMoreOpen)}
-            >
-              {readMoreOpen ? "Show Less" : "Read More"}
-            </summary>
-            <span className="about-content about_us_section_text">
-              If you have a passion for French, our French language training
-              course will pave the way for your success in obtaining the Diplôme
-              d'Études en Langue Française - DELF Certification. Additionally,
-              our Spanish language training will equip you with the necessary
-              skills to achieve the Diplomas de Español como Lengua Extranjera -
-              DELE Certification. For those aiming to attain fluency in English,
-              our IELTS certification preparation program is designed to help
-              you master the language. Furthermore, our specialized JLPT courses
-              will ensure your proficiency in the Japanese language.
-              LanguageZone is not just a language school, it is your gateway to
-              a world of Verbal fluency excellence. Join us today and Start your
-              Foreign Language Training In Dehradun that transcends boundaries,
-              opening doors to new opportunities.
-            </span>
-          </details>
-        </div>
-        <div className="industry_second_div">
-          <img
-            className="img_industry"
-            src="/images/small_logo.png"
-            alt="our logo"
+
+      <Band>
+        <SectionHead
+          eyebrow="Courses"
+          title="Choose your German level"
+          lead="Six courses, one for every stage of your German. Open a level to see the syllabus, the exam and who it suits."
+        />
+        <CardGrid min="360px">
+          {GERMAN_LEVELS.map((l) => (
+            <LevelCard key={l.slug} level={l} />
+          ))}
+        </CardGrid>
+      </Band>
+
+      <Band tone="ink">
+        <SectionHead
+          dark
+          eyebrow="Why Language Zone"
+          title="Quality German teaching, priced for students"
+        />
+        <CardGrid as="ul" min="240px">
+          {home.why.map((w) => (
+            <li key={w.title} className="rounded-[20px] bg-ink-soft p-5 md:p-7">
+              <h3 className="text-[19px] leading-snug font-semibold text-gold">
+                {w.title}
+              </h3>
+              <p className="mt-2 text-on-ink-soft">{w.text}</p>
+            </li>
+          ))}
+        </CardGrid>
+      </Band>
+
+      <Band>
+        <SectionHead
+          eyebrow="How it works"
+          title="From first class to certificate in four steps"
+        />
+        <CardGrid as="ol" min="230px">
+          {home.steps.map((s, i) => (
+            <li key={s.title}>
+              <Card className={cn(card, "h-full gap-0")}>
+                <span className="mb-3 flex size-10 items-center justify-center rounded-full bg-gold font-semibold text-ink">
+                  {i + 1}
+                </span>
+                <h3 className="text-[19px] font-semibold">{s.title}</h3>
+                <p className="mt-1.5 text-mute">{s.text}</p>
+              </Card>
+            </li>
+          ))}
+        </CardGrid>
+      </Band>
+
+      <Band tone="paper">
+        <SectionHead
+          eyebrow="Who learns German"
+          title="German for study, work and family"
+        />
+        <CardGrid as="ul">
+          {home.audiences.map((a) => (
+            <li key={a.title}>
+              <Card className={cn(card, "h-full gap-0")}>
+                <h3 className="text-[19px] font-semibold">{a.title}</h3>
+                <p className="mt-1.5 text-mute">{a.text}</p>
+              </Card>
+            </li>
+          ))}
+        </CardGrid>
+      </Band>
+
+      <Band>
+        <SectionHead
+          eyebrow="Certifications"
+          title="German levels and Goethe exams at a glance"
+        />
+        <ExamTable />
+      </Band>
+
+      <Band
+        tone="paper"
+        id="about"
+        className="flex flex-wrap items-center gap-7 md:gap-14"
+      >
+        <div className="min-w-0 flex-[1_1_440px]">
+          <SectionHead
+            eyebrow="About us"
+            title="A German language institute built around your goal"
           />
-        </div>
-      </section>
-      <section>
-        <div className="career-service__heading">
-          <h2>Why Choose Us</h2>
-        </div>
-        <div className="Career_service_container">
-          <div className="career_services">
-            <div
-              className="career_services_content"
-              style={{ background: "#e8f4ff" }}
-            >
-              <div className="img_career_service">
-                <img className="img" src="/images/trainer.png" alt="" />
-              </div>
-              <div className="career_services_sec">
-                <h3 className="career_heading_title">Expert Instructors</h3>
-                <p className="career_description">
-                  Quality instructors drive our success. We choose experienced,
-                  passionate language experts dedicated to creating a supportive
-                  learning environment. Trust us to help you reach your language
-                  goals and unlock new opportunities.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="career_services" style={{ justifyContent: "end" }}>
-            <div
-              className="career_services_content"
-              style={{ background: "#ffe1f8" }}
-            >
-              <div className="img_career_service">
-                <img className="img" src="/images/book.png" alt="" />
-              </div>
-              <div className="career_services_sec">
-                <h3 className="career_heading_title">
-                  Flexible Learning Options
-                </h3>
-                <p className="career_description">
-                  We offer flexible language training programs to suit your busy
-                  schedule. Our flexible Language Training fits any schedule.
-                  Choose online or offline classes, evenings, or personalized
-                  sessions. Achieve your language goals at your pace, unlocking
-                  new opportunities.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="career_services">
-            <div
-              className="career_services_content"
-              style={{ background: "#dfffdf" }}
-            >
-              <div className="img_career_service">
-                <img className="img" src="/images/communication.png" alt="" />
-              </div>
-              <div className="career_services_sec">
-                <h3 className="career_heading_title">Communicative Approach</h3>
-                <p className="career_description">
-                  Experience language learning with our Communicative Approach.
-                  Our instructors create an environment for active engagement in
-                  conversations and practical exercises. Choose our Language
-                  Courses for real-world language skills that go beyond
-                  structure and vocabulary.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="career_services" style={{ justifyContent: "end" }}>
-            <div
-              className="career_services_content"
-              style={{ background: "#ffe6b6" }}
-            >
-              <div className="img_career_service">
-                <img className="img" src="/images/offer.png" alt="" />
-              </div>
-              <div className="career_services_sec">
-                <h3 className="career_heading_title">Affordable Prices</h3>
-                <p className="career_description">
-                  Quality education should be affordable. Choose our language
-                  programs for expert instruction, engaging content, and a
-                  supportive learning environment—all within your budget. Learn
-                  a language without compromising quality or affordability.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <section className="contact-section">
-        <div className="contact-section-part1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 457 314"
-            fill="none"
+          <p className="text-[17px] text-mute">
+            Language Zone is a German language institute in Dehradun, run by
+            Brillica Services. Our certified trainers prepare students, job
+            seekers and working professionals for the Goethe-Zertifikat at every
+            level, with a communicative approach that gets you speaking from the
+            first class.
+          </p>
+          <Link
+            href="/contact-us"
+            className={cn(
+              buttonVariants({ variant: "ink", size: "pill" }),
+              "mt-6.5 max-md:w-full",
+            )}
           >
-            <path d="M0 0H237.5L457 314H221.5L0 0Z" fill="#8E2978" />
-          </svg>
-          <div className="contact-section-part1__desc">
-            <h2>Don’t know what Course to choose ?</h2>
-            <p>Enter your mobile number &amp; our experts will help you !</p>
-          </div>
+            Visit or call us
+          </Link>
         </div>
-        <div className="contact-section-part2">
-          <div className="home-contact-form">
-            <Input
-              unstyled
-              type="text"
-              name="User name"
-              placeholder="Your Name"
-              autoComplete="off"
-              id="HomeUserName"
-              maxLength={20}
-            />{" "}
-            <Input
-              unstyled
-              type="text"
-              name="contactNo"
-              placeholder="Your Mobile Number"
-              id="HomeUserNumber"
-              autoComplete="off"
-              maxLength={10}
-            />
-            <Button
-              unstyled
-              className="desktop-btn"
-              onClick={(event) => {
-                show_query_form(event.currentTarget as HTMLElement);
-              }}
-            >
-              Send Request
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="28"
-                fill="#000000"
-                viewBox="0 0 256 256"
-              >
-                <path d="M223.87,114l-168-95.89A16,16,0,0,0,32.93,37.32l31,90.47a.42.42,0,0,0,0,.1.3.3,0,0,0,0,.1l-31,90.67A16,16,0,0,0,48,240a16.14,16.14,0,0,0,7.92-2.1l167.91-96.05a16,16,0,0,0,.05-27.89ZM48,224l0-.09L78.14,136H136a8,8,0,0,0,0-16H78.22L48.06,32.12,48,32l168,95.83Z" />
-              </svg>
-            </Button>
-            <Button
-              unstyled
-              className="mobile-btn"
-              onClick={(event) => {
-                show_query_form(event.currentTarget as HTMLElement);
-              }}
-            >
-              Send Request
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="28"
-                fill="#000000"
-                viewBox="0 0 256 256"
-              >
-                <path d="M223.87,114l-168-95.89A16,16,0,0,0,32.93,37.32l31,90.47a.42.42,0,0,0,0,.1.3.3,0,0,0,0,.1l-31,90.67A16,16,0,0,0,48,240a16.14,16.14,0,0,0,7.92-2.1l167.91-96.05a16,16,0,0,0,.05-27.89ZM48,224l0-.09L78.14,136H136a8,8,0,0,0,0-16H78.22L48.06,32.12,48,32l168,95.83Z" />
-              </svg>
-            </Button>
-          </div>
-        </div>
-      </section>
-    </>
+        <ul className="grid min-w-0 flex-[1_1_440px] grid-cols-2 gap-3.5 md:gap-6">
+          {home.facts.map((f, i) => (
+            <li key={f.small}>
+              <Card className={cn(card, "h-full gap-1")}>
+                <b
+                  className={cn(
+                    "font-disp text-[26px] leading-tight text-navy md:text-[34px]",
+                    i === 0 && "text-brand-red",
+                    i === 3 && "text-indigo",
+                  )}
+                >
+                  {f.big}
+                </b>
+                <span className="text-mute">{f.small}</span>
+              </Card>
+            </li>
+          ))}
+        </ul>
+      </Band>
+
+      {posts.length > 0 && (
+        <Band>
+          <SectionHead
+            eyebrow="Guides"
+            title="Learning guides from our trainers"
+          />
+          <CardGrid min="320px">
+            {posts.map((p) => (
+              <PostCard key={p.slug} post={p} />
+            ))}
+          </CardGrid>
+          <p className="mt-7 text-center">
+            <Link href="/blogs" className="font-semibold text-indigo">
+              All articles →
+            </Link>
+          </p>
+        </Band>
+      )}
+
+      <FaqSection title="Frequently asked questions" items={home.faq} />
+
+      <CallbackBand />
+    </main>
   );
 }

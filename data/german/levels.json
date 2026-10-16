@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "a1",
+    "code": "A1",
+    "name": "Beginner",
+    "bg": "#FFD010",
+    "fg": "#14143A",
+    "summary": "Introduce yourself and handle everyday phrases.",
+    "description": "Start from zero. This course teaches you the sounds, the articles and the everyday sentences you need to introduce yourself, ask simple questions and get by in simple situations.",
+    "highlights": [
+      "Introduce yourself and others, and say where you live and what you do",
+      "Ask and answer simple questions about daily life",
+      "Understand and use greetings, numbers, dates and times"
+    ],
+    "exam": "Goethe-Zertifikat A1: Start Deutsch 1",
+    "shows": "Basic everyday phrases"
+  },
+  {
+    "slug": "a2",
+    "code": "A2",
+    "name": "Elementary",
+    "bg": "#F59E0B",
+    "fg": "#14143A",
+    "summary": "Describe your routine, the past and simple plans.",
+    "description": "Build on your first steps. You learn to describe what you did, what you can and must do, and to handle shopping, travel and the doctor in clear, simple German.",
+    "highlights": [
+      "Talk about work, family, shopping and free time in simple sentences",
+      "Describe past events using the Perfekt",
+      "Understand short, clear messages and announcements"
+    ],
+    "exam": "Goethe-Zertifikat A2",
+    "shows": "Simple routine communication"
+  },
+  {
+    "slug": "b1",
+    "code": "B1",
+    "name": "Intermediate",
+    "bg": "#D02020",
+    "fg": "#FFFFFF",
+    "summary": "Give opinions, write emails, manage most situations.",
+    "description": "B1 is where German starts to feel like your own language. You give opinions, explain reasons, write emails and follow the main points of everyday conversation and news.",
+    "highlights": [
+      "Deal with most situations while travelling, studying or working in German",
+      "Describe experiences, plans and opinions, and give reasons",
+      "Understand the main points of clear standard speech"
+    ],
+    "exam": "Goethe-Zertifikat B1",
+    "shows": "Independent use in most situations"
+  },
+  {
+    "slug": "b2",
+    "code": "B2",
+    "name": "Upper intermediate",
+    "bg": "#9E1A1A",
+    "fg": "#FFFFFF",
+    "summary": "Join discussions and write formal, detailed texts.",
+    "description": "At B2 you follow lectures and professional texts and take part in discussions with native speakers. The course sharpens your grammar, widens your vocabulary and trains formal writing.",
+    "highlights": [
+      "Interact fluently and spontaneously with native speakers",
+      "Understand complex texts on concrete and abstract topics",
+      "Write clear, detailed texts and formal letters"
+    ],
+    "exam": "Goethe-Zertifikat B2",
+    "shows": "Fluent, detailed interaction"
+  },
+  {
+    "slug": "c1",
+    "code": "C1",
+    "name": "Advanced",
+    "bg": "#2E2E8F",
+    "fg": "#FFFFFF",
+    "summary": "Fluent, flexible German for study and career.",
+    "description": "C1 learners express themselves fluently without searching for words. The course focuses on style, register, long texts and well-structured argument for study and professional life.",
+    "highlights": [
+      "Express ideas fluently and spontaneously",
+      "Understand demanding, longer texts and implicit meaning",
+      "Use the language flexibly for social, academic and professional purposes"
+    ],
+    "exam": "Goethe-Zertifikat C1",
+    "shows": "Effective, flexible use for study and work"
+  },
+  {
+    "slug": "c2",
+    "code": "C2",
+    "name": "Proficient",
+    "bg": "#14143A",
+    "fg": "#FFFFFF",
+    "summary": "Nuance, precision and the highest Goethe certificate.",
+    "description": "The highest level. C2 training refines nuance, tone and precision, and prepares you for the Großes Deutsches Sprachdiplom, the top certificate of the Goethe-Institut.",
+    "highlights": [
+      "Understand virtually everything you read or hear with ease",
+      "Summarise information from different sources into a coherent account",
+      "Express yourself spontaneously with fine shades of meaning"
+    ],
+    "exam": "Goethe-Zertifikat C2: Großes Deutsches Sprachdiplom",
+    "shows": "Near-native mastery"
+  }
+]

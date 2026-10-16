@@ -1,43 +1,47 @@
-import { notFound } from "next/navigation";
+// Blog posts live in data/blog/posts.json (structured blocks, not raw HTML) and are
+// rendered at build time. Swap this module's internals for a CMS or API later; the
+// page code only uses the exports below.
 
-// Blog API access (the original PHP pages fetched these server-side with cURL).
-export const BLOG_API_BASE =
-  process.env.BLOG_API_BASE ?? "https://www.brillicaservices.com";
+import posts from "@/data/blog/posts.json";
 
-export type BlogItem = {
-  path: string;
-  hero_image: string;
-  blog_title: string;
-  createdAt: string;
-  user_ip?: unknown[];
+export type Block =
+  | { type: "h2"; text: string }
+  | { type: "p"; text: string }
+  | { type: "ul"; items: string[] };
+
+export type Post = {
+  slug: string;
+  title: string;
+  category: string;
+  excerpt: string;
+  /** ISO date, e.g. 2026-09-24 */
+  date: string;
+  author: string;
+  readMinutes: number;
+  seo: { title: string; description: string; keywords: string };
+  content: Block[];
 };
 
-export type BlogPost = {
-  pageTitle: string;
-  meta_description: string;
-  keywords: string;
-  createdOn: string;
-  content: string;
-};
+const ALL = (posts as Post[])
+  .slice()
+  .sort((a, b) => b.date.localeCompare(a.date));
 
-export async function getBlogs(): Promise<BlogItem[]> {
-  try {
-    const res = await fetch(`${BLOG_API_BASE}/static/LanguazeZoneBlogs`, {
-      cache: "no-store",
-    });
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+/** All posts, newest first. */
+export function getPosts(): Post[] {
+  return ALL;
 }
 
-export async function getBlog(slug: string): Promise<BlogPost> {
-  const res = await fetch(
-    `${BLOG_API_BASE}/static/language-zone-blog?blog_name=${encodeURIComponent(slug)}`,
-    { cache: "no-store" },
-  ).catch(() => null);
-  const data = res ? await res.json().catch(() => null) : null;
-  if (!data?.content) notFound();
-  return data;
+export function getPost(slug: string): Post | null {
+  return ALL.find((p) => p.slug === slug) ?? null;
 }
+
+export const postUrl = (slug: string) => `/blogs/${slug}`;
+
+/** "24 September 2026" */
+export const formatDate = (iso: string) =>
+  new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
