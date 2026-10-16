@@ -35,7 +35,7 @@ export function getPost(slug: string): Post | null {
   return ALL.find((p) => p.slug === slug) ?? null;
 }
 
-export const postUrl = (slug: string) => `/courses/blog/${slug}`;
+export const postUrl = (slug: string) => `/blogs/${slug}`;
 
 /** "24 September 2026" */
 export const formatDate = (iso: string) =>

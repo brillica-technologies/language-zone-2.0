@@ -12,8 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE}${levelUrl(l.slug)}`,
       priority: 0.8,
     })),
-    { url: `${SITE}/courses/blog`, priority: 0.6 },
-    { url: `${SITE}/courses/contact-us`, priority: 0.6 },
+    { url: `${SITE}/blogs`, priority: 0.6 },
+    { url: `${SITE}/contact-us`, priority: 0.6 },
   ];
   const posts = getPosts().map((p) => ({
     url: `${SITE}${postUrl(p.slug)}`,

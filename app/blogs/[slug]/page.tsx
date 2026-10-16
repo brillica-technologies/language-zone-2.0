@@ -25,7 +25,7 @@ const SITE = "https://languagezone.in";
 
 export async function generateMetadata({
   params,
-}: PageProps<"/courses/blog/[slug]">): Promise<Metadata> {
+}: PageProps<"/blogs/[slug]">): Promise<Metadata> {
   const post = getPost((await params).slug);
   if (!post) return {};
   const url = `${SITE}${postUrl(post.slug)}`;
@@ -48,7 +48,7 @@ export async function generateMetadata({
 
 export default async function BlogPostPage({
   params,
-}: PageProps<"/courses/blog/[slug]">) {
+}: PageProps<"/blogs/[slug]">) {
   const post = getPost((await params).slug);
   if (!post) notFound();
 
@@ -79,7 +79,7 @@ export default async function BlogPostPage({
       "@type": "BreadcrumbList",
       itemListElement: [
         { name: "Home", item: `${SITE}/` },
-        { name: "Blog", item: `${SITE}/courses/blog` },
+        { name: "Blog", item: `${SITE}/blogs` },
         { name: post.title, item: url },
       ].map((c, i) => ({ "@type": "ListItem", position: i + 1, ...c })),
     },
@@ -95,7 +95,7 @@ export default async function BlogPostPage({
       <PageHero
         crumbs={[
           { label: "Home", href: "/" },
-          { label: "Blog", href: "/courses/blog" },
+          { label: "Blog", href: "/blogs" },
           { label: post.category },
         ]}
         className="max-w-[860px]"

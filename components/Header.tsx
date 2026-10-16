@@ -34,14 +34,14 @@ import {
 const NAV = [
   { href: "/#about", label: "About us", match: () => false },
   {
-    href: "/courses/blog",
+    href: "/blogs",
     label: "Blog",
-    match: (p: string) => p.startsWith("/courses/blog"),
+    match: (p: string) => p.startsWith("/blogs"),
   },
   {
-    href: "/courses/contact-us",
+    href: "/contact-us",
     label: "Contact us",
-    match: (p: string) => p.startsWith("/courses/contact-us"),
+    match: (p: string) => p.startsWith("/contact-us"),
   },
 ];
 
@@ -139,7 +139,7 @@ export default function Header() {
           </nav>
 
           <Link
-            href="/courses/contact-us"
+            href="/contact-us"
             className={cn(
               buttonVariants({ variant: "gold", size: "pill" }),
               "hidden lg:inline-flex",

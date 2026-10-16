@@ -46,7 +46,7 @@ const card = "rounded-[20px] p-5 text-base ring-line md:p-7";
 
 export async function generateMetadata({
   params,
-}: PageProps<"/courses/german/[level]">): Promise<Metadata> {
+}: PageProps<"/german/[level]">): Promise<Metadata> {
   const level = getLevel((await params).level);
   if (!level) return {};
   const url = `${SITE}${levelUrl(level.slug)}`;
@@ -63,9 +63,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({
-  params,
-}: PageProps<"/courses/german/[level]">) {
+export default async function Page({ params }: PageProps<"/german/[level]">) {
   const level = getLevel((await params).level);
   if (!level) notFound();
 

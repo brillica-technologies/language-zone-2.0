@@ -60,9 +60,9 @@ const DIALOG_POINTS = [
   "Certified trainers in Dehradun",
 ];
 
-// preselect the level on a level page, e.g. /courses/german/b1
+// preselect the level on a level page, e.g. /german/b1
 function courseFor(pathname: string) {
-  const slug = pathname.match(/^\/courses\/german\/([a-c][12])\b/)?.[1];
+  const slug = pathname.match(/^\/german\/([a-c][12])\b/)?.[1];
   const level = GERMAN_LEVELS.find((l) => l.slug === slug);
   return level ? levelLabel(level) : "";
 }

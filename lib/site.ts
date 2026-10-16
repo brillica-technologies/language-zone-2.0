@@ -26,7 +26,7 @@ export type LevelSummary = {
 };
 
 export const GERMAN_LEVELS: LevelSummary[] = levelSummaries;
-export const GERMAN_COURSE_URL = "/courses/german";
+export const GERMAN_COURSE_URL = "/german";
 export const levelUrl = (slug: string) => `${GERMAN_COURSE_URL}/${slug}`;
 
 /** "German B1: Intermediate", the label used in menus and the enquiry form. */

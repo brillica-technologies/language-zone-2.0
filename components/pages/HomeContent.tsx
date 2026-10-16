@@ -53,7 +53,7 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
             </Lead>
             <div className="mt-6.5 flex flex-wrap gap-3">
               <Link
-                href="/courses/contact-us"
+                href="/contact-us"
                 className={cn(
                   buttonVariants({ variant: "gold", size: "pill" }),
                   "max-md:w-full",
@@ -211,7 +211,7 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
             first class.
           </p>
           <Link
-            href="/courses/contact-us"
+            href="/contact-us"
             className={cn(
               buttonVariants({ variant: "ink", size: "pill" }),
               "mt-6.5 max-md:w-full",
@@ -252,7 +252,7 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
             ))}
           </CardGrid>
           <p className="mt-7 text-center">
-            <Link href="/courses/blog" className="font-semibold text-indigo">
+            <Link href="/blogs" className="font-semibold text-indigo">
               All articles →
             </Link>
           </p>

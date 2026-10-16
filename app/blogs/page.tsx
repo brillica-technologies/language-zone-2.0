@@ -14,7 +14,7 @@ import { getPosts } from "@/lib/blog";
 const TITLE = "German Learning Blog | Goethe Exams and Grammar | Language Zone";
 const DESCRIPTION =
   "Guides on Goethe-Zertifikat levels, German grammar, learning habits and studying in Germany from the trainers at Language Zone, Dehradun.";
-const URL = "https://languagezone.in/courses/blog";
+const URL = "https://languagezone.in/blogs";
 
 export const metadata: Metadata = {
   title: TITLE,
