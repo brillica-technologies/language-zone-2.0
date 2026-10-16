@@ -1,0 +1,53 @@
+{
+  "seo": {
+    "title": "About Language Zone | German Institute in Dehradun",
+    "description": "Language Zone is a German language institute in Dehradun with certified trainers, Goethe-Zertifikat preparation and online and offline batches.",
+    "keywords": "German institute in Dehradun, about Language Zone, German language institute Dehradun, Goethe-Zertifikat trainers Dehradun, German classes Race Course Dehradun"
+  },
+  "hero": {
+    "title": "About Language Zone, German Institute in Dehradun",
+    "lead": "Language Zone is a German language institute in Dehradun that helps learners reach German proficiency with customised training and certified trainers."
+  },
+  "story": {
+    "eyebrow": "Our story",
+    "title": "German training that follows your goal",
+    "paragraphs": [
+      "At Language Zone our focus is exceptional language training that fits the needs of each learner. Our team of certified trainers prepares students, job seekers and professionals for the Goethe-Zertifikat, from the first words at A1 to advanced fluency at C1 and C2.",
+      "We teach German together with the culture behind it, so you gain proficiency and the confidence to use the language for study, work and life abroad.",
+      "Language Zone is a Brillica Services company."
+    ],
+    "facts": [
+      { "big": "A1–C2", "small": "Every Goethe-Zertifikat level" },
+      { "big": "2017", "small": "Teaching in Dehradun since" },
+      { "big": "2 modes", "small": "Online and offline batches" },
+      { "big": "4 skills", "small": "Lesen, Hören, Schreiben, Sprechen" }
+    ]
+  },
+  "principles": {
+    "eyebrow": "How we teach",
+    "title": "Three principles behind every class",
+    "items": [
+      {
+        "title": "Communicative teaching",
+        "text": "You speak German in every session. Grammar is taught in context, then practised in conversation."
+      },
+      {
+        "title": "Exam-focused",
+        "text": "Each level follows its Goethe-Zertifikat, with mock tests in the real format."
+      },
+      {
+        "title": "Flexible learning",
+        "text": "Online and offline classes, morning and evening batches, and personalised sessions."
+      }
+    ]
+  },
+  "team": {
+    "eyebrow": "Our trainers",
+    "title": "Meet the German team",
+    "trainers": []
+  },
+  "visit": {
+    "eyebrow": "Visit us",
+    "title": "Our centre in Dehradun"
+  }
+}

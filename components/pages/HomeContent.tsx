@@ -211,13 +211,13 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
             first class.
           </p>
           <Link
-            href="/contact-us"
+            href="/about-us"
             className={cn(
               buttonVariants({ variant: "ink", size: "pill" }),
               "mt-6.5 max-md:w-full",
             )}
           >
-            Visit or call us
+            About Language Zone
           </Link>
         </div>
         <ul className="grid min-w-0 flex-[1_1_440px] grid-cols-2 gap-3.5 md:gap-6">

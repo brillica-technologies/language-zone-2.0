@@ -32,7 +32,11 @@ import {
 } from "@/lib/site";
 
 const NAV = [
-  { href: "/#about", label: "About us", match: () => false },
+  {
+    href: "/about-us",
+    label: "About us",
+    match: (p: string) => p.startsWith("/about-us"),
+  },
   {
     href: "/blogs",
     label: "Blog",

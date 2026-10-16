@@ -70,7 +70,7 @@ export default function Footer() {
           </Column>
           <Column title="Company">
             <li>
-              <Link href="/#about">About us</Link>
+              <Link href="/about-us">About us</Link>
             </li>
             <li>
               <Link href="/blogs">Blog</Link>
