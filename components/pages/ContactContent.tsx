@@ -136,7 +136,6 @@ export default function ContactContent() {
             title="Send an enquiry"
             subtitle="All fields except email and message are required."
             showEmail
-            showMode
             showMessage
             context="Contact page"
             submitLabel="Send enquiry"

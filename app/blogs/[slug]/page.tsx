@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/JsonLd";
 import ArticleBody from "@/components/blog/ArticleBody";
 import PostCard from "@/components/blog/PostCard";
 import CallbackBand from "@/components/course/CallbackBand";
@@ -12,6 +13,7 @@ import {
   SectionHead,
 } from "@/components/course/Section";
 import { formatDate, getPost, getPosts, postUrl } from "@/lib/blog";
+import { ORG_ID, absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { GERMAN_LEVELS } from "@/lib/site";
 
 // Posts come from data/blog/posts.json; unknown slugs are a 404.
@@ -21,28 +23,26 @@ export function generateStaticParams() {
   return getPosts().map((p) => ({ slug: p.slug }));
 }
 
-const SITE = "https://languagezone.in";
-
 export async function generateMetadata({
   params,
 }: PageProps<"/blogs/[slug]">): Promise<Metadata> {
   const post = getPost((await params).slug);
   if (!post) return {};
-  const url = `${SITE}${postUrl(post.slug)}`;
   return {
-    title: post.seo.title,
-    description: post.seo.description,
-    keywords: post.seo.keywords,
-    alternates: { canonical: url },
-    authors: [{ name: post.author }],
-    openGraph: {
-      type: "article",
+    ...pageMetadata({
       title: post.seo.title,
       description: post.seo.description,
-      url,
+      keywords: post.seo.keywords,
+      path: postUrl(post.slug),
+      type: "article",
       publishedTime: post.date,
+      modifiedTime: post.date,
       section: post.category,
-    },
+      authors: [post.author],
+      image: `${postUrl(post.slug)}/opengraph-image`,
+      imageAlt: post.title,
+    }),
+    authors: [{ name: post.author }],
   };
 }
 
@@ -52,45 +52,50 @@ export default async function BlogPostPage({
   const post = getPost((await params).slug);
   if (!post) notFound();
 
-  const url = `${SITE}${postUrl(post.slug)}`;
+  const url = absoluteUrl(postUrl(post.slug));
   const more = getPosts()
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3);
+
+  const words = post.content
+    .flatMap((b) => (b.type === "ul" ? b.items : [b.text]))
+    .join(" ")
+    .split(/\s+/).length;
 
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "BlogPosting",
+      "@id": `${url}#article`,
+      mainEntityOfPage: url,
+      url,
       headline: post.title,
       description: post.seo.description,
       keywords: post.seo.keywords,
       articleSection: post.category,
+      inLanguage: "en-IN",
+      wordCount: words,
       datePublished: post.date,
-      author: { "@type": "Organization", name: post.author },
-      publisher: {
-        "@type": "EducationalOrganization",
-        name: "Language Zone",
-        url: `${SITE}/`,
+      dateModified: post.date,
+      image: `${url}/opengraph-image`,
+      author: {
+        "@type": "Organization",
+        name: post.author,
+        url: absoluteUrl("/about"),
       },
-      mainEntityOfPage: url,
+      publisher: { "@id": ORG_ID },
+      isPartOf: { "@id": `${absoluteUrl("/blogs")}#blog` },
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { name: "Home", item: `${SITE}/` },
-        { name: "Blog", item: `${SITE}/blogs` },
-        { name: post.title, item: url },
-      ].map((c, i) => ({ "@type": "ListItem", position: i + 1, ...c })),
-    },
+    breadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "Blog", path: "/blogs" },
+      { name: post.title, path: postUrl(post.slug) },
+    ]),
   ];
 
   return (
     <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <PageHero
         crumbs={[

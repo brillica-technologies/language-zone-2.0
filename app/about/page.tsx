@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
+import JsonLd from "@/components/JsonLd";
 import CallbackBand from "@/components/course/CallbackBand";
 import {
   Band,
@@ -14,6 +15,7 @@ import { Card } from "@/components/ui/card";
 import about from "@/data/about.json";
 import { MAP_EMBED } from "@/lib/location";
 import { ADDRESS, MAP_LINK, PHONE_PRIMARY, PHONE_SECONDARY } from "@/lib/site";
+import { ORG_ID, absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 /** A trainer card; add entries to data/about.json → team.trainers to show the section. */
@@ -21,45 +23,37 @@ type Trainer = { name: string; role: string; bio: string; photo?: string };
 
 const { seo, hero, story, principles, team, visit } = about;
 const trainers: Trainer[] = team.trainers;
-const URL = "https://languagezone.in/about-us";
+const PATH = "/about";
 const card = "rounded-[20px] p-5 text-base ring-line md:p-7";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: seo.title,
   description: seo.description,
   keywords: seo.keywords,
-  alternates: { canonical: URL },
-  openGraph: {
-    type: "website",
-    title: seo.title,
-    description: seo.description,
-    url: URL,
-  },
-};
+  path: PATH,
+});
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
-  url: URL,
-  name: seo.title,
-  description: seo.description,
-  about: {
-    "@type": "EducationalOrganization",
-    name: "Language Zone",
-    url: "https://languagezone.in/",
-    parentOrganization: { "@type": "Organization", name: "Brillica Services" },
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    url: absoluteUrl(PATH),
+    name: seo.title,
+    description: seo.description,
+    about: { "@id": ORG_ID },
   },
-};
+  breadcrumbJsonLd([
+    { name: "Home", path: "/" },
+    { name: "About", path: PATH },
+  ]),
+];
 
 export default function Page() {
   return (
     <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
-      <PageHero crumbs={[{ label: "Home", href: "/" }, { label: "About us" }]}>
+      <PageHero crumbs={[{ label: "Home", href: "/" }, { label: "About" }]}>
         <PageTitle>{hero.title}</PageTitle>
         <Lead>{hero.lead}</Lead>
       </PageHero>

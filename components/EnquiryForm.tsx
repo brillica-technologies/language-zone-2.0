@@ -48,7 +48,6 @@ export type EnquiryFormProps = {
   course?: "select" | string;
   defaultCourse?: string;
   showEmail?: boolean;
-  showMode?: boolean;
   showMessage?: boolean;
   /** added to the lead message, e.g. "Download curriculum request" */
   context?: string;
@@ -63,7 +62,6 @@ export default function EnquiryForm({
   course = "select",
   defaultCourse = "",
   showEmail = false,
-  showMode = false,
   showMessage = false,
   context,
   submitLabel = "Submit",
@@ -79,7 +77,6 @@ export default function EnquiryForm({
   const [otp, setOtp] = useState("");
   const [email, setEmail] = useState("");
   const [picked, setPicked] = useState(defaultCourse);
-  const [mode, setMode] = useState("");
   const [message, setMessage] = useState("");
 
   const [errors, setErrors] = useState<Errors>({});
@@ -96,6 +93,10 @@ export default function EnquiryForm({
   const dial = countries.find((c) => c.code === country)?.dial ?? "91";
   const contactNo = toContactNo(phone, country);
   const otpSent = otpFor !== "" && otpFor === contactNo;
+  // Send OTP unlocks only once the number is complete and valid for the country
+  // (10 digits starting 6–9 for India).
+  const phoneReady = isValidPhone(phone, country);
+  const phoneMax = country === "IN" ? 10 : 15;
 
   useEffect(() => {
     if (cooldown <= 0) return;
@@ -107,7 +108,8 @@ export default function EnquiryForm({
     name: () =>
       !name.trim()
         ? "Please enter your name."
-        : !NAME_PATTERN.test(name.trim())
+        : !NAME_PATTERN.test(name.trim()) ||
+            (name.match(/[A-Za-z]/g) ?? []).length < 2
           ? "Use letters only (2–50 characters)."
           : "",
     phone: () =>
@@ -118,10 +120,12 @@ export default function EnquiryForm({
           : "",
     otp: () =>
       !otpSent
-        ? "Verify your number: tap Send OTP first."
-        : otp.length !== OTP_LENGTH
-          ? `Enter the ${OTP_LENGTH}-digit OTP sent to your WhatsApp.`
-          : "",
+        ? ""
+        : !otp
+          ? "Please enter the OTP sent to your WhatsApp."
+          : otp.length !== OTP_LENGTH
+            ? `The OTP has ${OTP_LENGTH} digits.`
+            : "",
     email: () =>
       email && !EMAIL_PATTERN.test(email.trim())
         ? "Please enter a valid email address."
@@ -146,6 +150,7 @@ export default function EnquiryForm({
   const touch = (f: Field) => errors[f] && validate([f]);
 
   async function onSendOtp() {
+    if (sending || !phoneReady) return;
     setNotice(null);
     if (!validate(["name", "phone"])) return;
     setSending(true);
@@ -174,7 +179,6 @@ export default function EnquiryForm({
       "Language Zone",
       context,
       chosen && `Course: ${chosen}`,
-      mode && `Mode: ${mode}`,
       message.trim(),
     ]
       .filter(Boolean)
@@ -183,11 +187,21 @@ export default function EnquiryForm({
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    if (submitting) return;
     setNotice(null);
     const fields: Field[] = ["name", "phone", "otp"];
     if (showEmail) fields.push("email");
     if (course === "select") fields.push("course");
-    if (!validate(fields)) return;
+    let ok = validate(fields);
+    // a valid number still has to be verified before the enquiry can be sent
+    if (phoneReady && !otpSent) {
+      setErrors((er) => ({
+        ...er,
+        phone: "Verify your number: tap Send OTP and enter the code.",
+      }));
+      ok = false;
+    }
+    if (!ok) return;
 
     setSubmitting(true);
     const res = await submitEnquiry({
@@ -215,7 +229,6 @@ export default function EnquiryForm({
     setOtp("");
     setEmail("");
     setPicked(defaultCourse);
-    setMode("");
     setMessage("");
     setOtpFor("");
     setErrors({});
@@ -294,7 +307,11 @@ export default function EnquiryForm({
           placeholder="Your name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          onBlur={() => name && validate(["name"])}
+          onBlur={() => {
+            const tidy = name.replace(/\s+/g, " ").trim();
+            if (tidy !== name) setName(tidy);
+            if (tidy) validate(["name"]);
+          }}
           {...aria("name")}
         />
       </FormField>
@@ -329,7 +346,10 @@ export default function EnquiryForm({
               className="absolute inset-0 cursor-pointer opacity-0"
               value={country}
               onChange={(e) => {
-                setCountry(e.target.value as CountryCode);
+                const next = e.target.value as CountryCode;
+                setCountry(next);
+                setPhone((p) => p.slice(0, next === "IN" ? 10 : 15));
+                setOtp("");
                 touch("phone");
               }}
             >
@@ -346,11 +366,18 @@ export default function EnquiryForm({
             type="tel"
             inputMode="numeric"
             autoComplete="tel-national"
-            maxLength={15}
-            placeholder="Mobile number"
+            maxLength={phoneMax}
+            placeholder={
+              country === "IN" ? "10-digit mobile number" : "Mobile number"
+            }
             value={phone}
             onChange={(e) => {
-              setPhone(e.target.value.replace(/\D/g, ""));
+              const digits = e.target.value
+                .replace(/\D/g, "")
+                .replace(/^0+/, "")
+                .slice(0, phoneMax);
+              setPhone(digits);
+              if (otp) setOtp("");
               if (errors.phone)
                 setErrors((er) => ({ ...er, phone: undefined }));
             }}
@@ -362,7 +389,8 @@ export default function EnquiryForm({
             variant="whatsapp"
             className="m-[5px] h-auto rounded-[9px] px-3 text-[13px] disabled:bg-[#9fb8ab] disabled:opacity-100 md:px-3.5 md:text-sm"
             onClick={onSendOtp}
-            disabled={sending || (otpSent && cooldown > 0)}
+            disabled={sending || !phoneReady || (otpSent && cooldown > 0)}
+            title={phoneReady ? undefined : "Enter a valid mobile number first"}
           >
             {sending
               ? "Sending…"
@@ -375,27 +403,30 @@ export default function EnquiryForm({
         </div>
       </FormField>
 
-      <FormField id={`${id}-otp`} label="OTP" error={errors.otp}>
-        <Input
-          id={`${id}-otp`}
-          className={cn(
-            FIELD,
-            "font-semibold tracking-[0.4em] placeholder:font-normal placeholder:tracking-[0.1em] disabled:bg-paper disabled:opacity-100",
-          )}
-          type="text"
-          inputMode="numeric"
-          autoComplete="one-time-code"
-          maxLength={OTP_LENGTH}
-          placeholder={otpSent ? "• • • •" : "Send OTP first"}
-          disabled={!otpSent}
-          value={otp}
-          onChange={(e) => {
-            setOtp(e.target.value.replace(/\D/g, ""));
-            if (errors.otp) setErrors((er) => ({ ...er, otp: undefined }));
-          }}
-          {...aria("otp")}
-        />
-      </FormField>
+      {otpSent && (
+        <FormField id={`${id}-otp`} label="OTP" error={errors.otp}>
+          <Input
+            id={`${id}-otp`}
+            className={cn(
+              FIELD,
+              "font-semibold tracking-[0.4em] placeholder:font-normal placeholder:tracking-[0.1em]",
+            )}
+            type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            autoFocus
+            maxLength={OTP_LENGTH}
+            placeholder="• • • •"
+            value={otp}
+            onChange={(e) => {
+              setOtp(e.target.value.replace(/\D/g, "").slice(0, OTP_LENGTH));
+              if (errors.otp) setErrors((er) => ({ ...er, otp: undefined }));
+            }}
+            onBlur={() => otp && validate(["otp"])}
+            {...aria("otp")}
+          />
+        </FormField>
+      )}
 
       {showEmail && (
         <FormField
@@ -409,9 +440,14 @@ export default function EnquiryForm({
             className={FIELD}
             type="email"
             autoComplete="email"
+            maxLength={100}
             placeholder="you@example.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value.trim());
+              if (errors.email)
+                setErrors((er) => ({ ...er, email: undefined }));
+            }}
             onBlur={() => validate(["email"])}
             {...aria("email")}
           />
@@ -443,23 +479,6 @@ export default function EnquiryForm({
                 {c}
               </NativeSelectOption>
             ))}
-          </NativeSelect>
-        </FormField>
-      )}
-
-      {showMode && (
-        <FormField id={`${id}-mode`} label="Preferred mode">
-          <NativeSelect
-            id={`${id}-mode`}
-            className={SELECT}
-            value={mode}
-            onChange={(e) => setMode(e.target.value)}
-          >
-            <NativeSelectOption value="">Online or offline</NativeSelectOption>
-            <NativeSelectOption value="Offline, Race Course centre">
-              Offline, at the Race Course centre
-            </NativeSelectOption>
-            <NativeSelectOption value="Online">Online</NativeSelectOption>
           </NativeSelect>
         </FormField>
       )}
@@ -501,20 +520,6 @@ export default function EnquiryForm({
       >
         {submitting ? "Submitting…" : submitLabel}
       </Button>
-      <p className="text-center text-xs text-mute">
-        By submitting, you agree to our{" "}
-        <a
-          className="text-indigo underline"
-          href="/static/terms-and-conditions"
-        >
-          Terms
-        </a>{" "}
-        and{" "}
-        <a className="text-indigo underline" href="/static/privacy-policy">
-          Privacy Policy
-        </a>
-        .
-      </p>
     </form>
   );
 }

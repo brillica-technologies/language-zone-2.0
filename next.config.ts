@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
           permanent: true,
         },
       ]),
+      // About page renamed: /about-us → /about
+      { source: "/about-us", destination: "/about", permanent: true },
       // The site now teaches German only; old Spanish / IELTS links go home.
       ...["/courses/spanish", "/courses/ielts"].flatMap((source) => [
         { source, destination: "/", permanent: true },

@@ -200,7 +200,7 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
       >
         <div className="min-w-0 flex-[1_1_440px]">
           <SectionHead
-            eyebrow="About us"
+            eyebrow="About"
             title="A German language institute built around your goal"
           />
           <p className="text-[17px] text-mute">
@@ -211,7 +211,7 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
             first class.
           </p>
           <Link
-            href="/about-us"
+            href="/about"
             className={cn(
               buttonVariants({ variant: "ink", size: "pill" }),
               "mt-6.5 max-md:w-full",

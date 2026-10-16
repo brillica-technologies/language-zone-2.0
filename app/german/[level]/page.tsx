@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import EnquiryButton from "@/components/EnquiryButton";
+import JsonLd from "@/components/JsonLd";
 import CallbackBand from "@/components/course/CallbackBand";
 import FaqSection from "@/components/course/FaqSection";
 import {
@@ -23,6 +24,8 @@ import {
   getNeighbours,
   type Skill,
 } from "@/lib/courses";
+import { ADDRESS } from "@/lib/location";
+import { ORG_ID, absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import {
   GERMAN_COURSE_URL,
   GERMAN_LEVELS,
@@ -39,7 +42,6 @@ export function generateStaticParams() {
   return GERMAN_LEVELS.map((l) => ({ level: l.slug }));
 }
 
-const SITE = "https://languagezone.in";
 const SKILLS: Skill[] = ["reading", "listening", "writing", "speaking"];
 const { glance, examIntro, skillLabels } = GERMAN_COURSE.level;
 const card = "rounded-[20px] p-5 text-base ring-line md:p-7";
@@ -49,18 +51,14 @@ export async function generateMetadata({
 }: PageProps<"/german/[level]">): Promise<Metadata> {
   const level = getLevel((await params).level);
   if (!level) return {};
-  const url = `${SITE}${levelUrl(level.slug)}`;
-  return {
+  return pageMetadata({
     title: level.seo.title,
     description: level.seo.description,
-    alternates: { canonical: url },
-    openGraph: {
-      type: "website",
-      title: level.seo.title,
-      description: level.seo.description,
-      url,
-    },
-  };
+    keywords: level.seo.keywords,
+    path: levelUrl(level.slug),
+    image: `${levelUrl(level.slug)}/opengraph-image`,
+    imageAlt: `German ${level.code} course in Dehradun at Language Zone`,
+  });
 }
 
 export default async function Page({ params }: PageProps<"/german/[level]">) {
@@ -70,28 +68,43 @@ export default async function Page({ params }: PageProps<"/german/[level]">) {
   const { prev, next } = getNeighbours(level.slug);
   const course = levelLabel(level);
 
+  const url = absoluteUrl(levelUrl(level.slug));
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Course",
-      name: `${course} course in Dehradun`,
+      "@id": `${url}#course`,
+      url,
+      name: `German ${level.code} Course in Dehradun (${level.name})`,
       description: level.description,
+      courseCode: `GERMAN-${level.code}`,
+      inLanguage: "de",
+      educationalLevel: `CEFR ${level.code} (${level.name})`,
       educationalCredentialAwarded: level.exam,
-      provider: {
-        "@type": "EducationalOrganization",
-        name: "Language Zone",
-        url: `${SITE}/`,
-      },
+      teaches: level.outcomes,
+      syllabusSections: level.syllabus.map((name) => ({
+        "@type": "Syllabus",
+        name,
+      })),
+      provider: { "@id": ORG_ID },
+      hasCourseInstance: [
+        {
+          "@type": "CourseInstance",
+          courseMode: "Onsite",
+          location: {
+            "@type": "Place",
+            name: "Language Zone, Race Course, Dehradun",
+            address: ADDRESS,
+          },
+        },
+        { "@type": "CourseInstance", courseMode: "Online" },
+      ],
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "BreadcrumbList",
-      itemListElement: [
-        { name: "Home", item: `${SITE}/` },
-        { name: "German course", item: `${SITE}${GERMAN_COURSE_URL}` },
-        { name: level.code, item: `${SITE}${levelUrl(level.slug)}` },
-      ].map((c, i) => ({ "@type": "ListItem", position: i + 1, ...c })),
-    },
+    breadcrumbJsonLd([
+      { name: "Home", path: "/" },
+      { name: "German course", path: GERMAN_COURSE_URL },
+      { name: `German ${level.code}`, path: levelUrl(level.slug) },
+    ]),
   ];
 
   const glanceRows = [
@@ -104,10 +117,7 @@ export default async function Page({ params }: PageProps<"/german/[level]">) {
 
   return (
     <main>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
 
       <PageHero
         crumbs={[
