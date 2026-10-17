@@ -1,44 +1,30 @@
 import type { Metadata } from "next";
-import "@/styles/index.css";
-import "@/styles/hero.css";
 import HomeContent from "@/components/pages/HomeContent";
+import { getPosts } from "@/lib/blog";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Best Foreign Language Courses In Dehradun By Language Zone",
+export const metadata: Metadata = pageMetadata({
+  title: "German Language Course in Dehradun (A1–C2) | Language Zone",
   description:
-    "Language Zone Provides The Best Foreign Language Courses In Dehradun. Language Training In IELTS, French, German, Spanish, etc with certification",
-  keywords:
-    "Language Courses In Dehradun, Foreign Language Courses In Dehradun, Language Training In Dehradun, Language Courses, Language Training, Goethe Certification, DELF Certification, DELE Certification, IELTS Certification, JLPT Certification",
-  alternates: {
-    canonical: "https://languagezone.in/",
-  },
-  openGraph: {
-    type: "website",
-    title: "Best Foreign Language Courses In Dehradun By Language Zone",
-    description:
-      "Language Courses In Dehradun, Foreign Language Courses In Dehradun, Language Training In Dehradun, Language Courses, Language Training, Goethe Certification, DELF Certification, DELE Certification, IELTS Certification, JLPT Certification.",
-    url: "https://languagezone.in//",
-  },
-  other: {
-    "identifier-URL": "https://languagezone.in/",
-    url: "https://languagezone.in/",
-    "instagram:title":
-      "Best Foreign Language Courses In Dehradun By Language Zone",
-    "instagram:description":
-      "Language Courses In Dehradun, Foreign Language Courses In Dehradun, Language Training In Dehradun, Language Courses, Language Training, Goethe Certification, DELF Certification, DELE Certification, IELTS Certification, JLPT Certification",
-    "instagram:card": "summary",
-    "instagram:site": "@LanguageZone",
-    "twitter:card": "https://languagezone.in/",
-    "twitter:site": "l",
-    "twitter:title":
-      "Best Foreign Language Courses In Dehradun By Language Zone",
-    "twitter:description":
-      "Language Courses In Dehradun, Foreign Language Courses In Dehradun, Language Training In Dehradun, Language Courses, Language Training, Goethe Certification, DELF Certification, DELE Certification, IELTS Certification, JLPT Certification.",
-    "twitter:image": "twitter_image",
-    "twitter:url": "https://languagezone.in/",
-  },
-};
+    "Learn German in Dehradun at Language Zone: Goethe-Zertifikat courses from A1 to C2, certified trainers, online and offline batches at Race Course.",
+  keywords: [
+    "German language course in Dehradun",
+    "German classes in Dehradun",
+    "learn German in Dehradun",
+    "German institute in Dehradun",
+    "Goethe-Zertifikat Dehradun",
+    "Goethe exam preparation Dehradun",
+    "German A1 course Dehradun",
+    "online German classes Uttarakhand",
+  ],
+  path: "/",
+});
 
 export default function Page() {
-  return <HomeContent />;
+  const posts = getPosts().slice(0, 3);
+  return (
+    <>
+      <HomeContent posts={posts} />
+    </>
+  );
 }

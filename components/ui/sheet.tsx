@@ -41,39 +41,11 @@ function SheetContent({
   children,
   side = "right",
   showCloseButton = true,
-  unstyled = false,
-  overlay = true,
-  overlayClassName,
   ...props
 }: SheetPrimitive.Popup.Props & {
   side?: "top" | "right" | "bottom" | "left";
   showCloseButton?: boolean;
-  /** Skip the shadcn look; only `className` / `overlayClassName` (the site's CSS) apply. */
-  unstyled?: boolean;
-  /** Render the backdrop (default). */
-  overlay?: boolean;
-  overlayClassName?: string;
 }) {
-  if (unstyled) {
-    return (
-      <SheetPortal>
-        {overlay && (
-          <SheetPrimitive.Backdrop
-            data-slot="sheet-overlay"
-            className={overlayClassName}
-          />
-        )}
-        <SheetPrimitive.Popup
-          data-slot="sheet-content"
-          data-side={side}
-          className={className}
-          {...props}
-        >
-          {children}
-        </SheetPrimitive.Popup>
-      </SheetPortal>
-    );
-  }
   return (
     <SheetPortal>
       <SheetOverlay />

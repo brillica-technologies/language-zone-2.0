@@ -1,41 +1,73 @@
-import type { Metadata } from "next";
-import Script from "next/script";
+import type { Metadata, Viewport } from "next";
+import { Fraunces, Readex_Pro } from "next/font/google";
 import "./globals.css";
-import "@/styles/footer.css";
-import "@/styles/header.css";
-import "@/styles/main.css";
-import "@/styles/tabnav.css";
-import "@/styles/popup.css";
-import "@/styles/course_list.css";
-import "@/styles/courses/banner.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import TabNav from "@/components/TabNav";
-import CoursesList from "@/components/CoursesList";
 import Popup from "@/components/Popup";
-import SiteScripts from "@/components/SiteScripts";
+import JsonLd from "@/components/JsonLd";
+import { GEO, LOCALE, SITE_NAME, SITE_URL, siteJsonLd } from "@/lib/seo";
+
+const readex = Readex_Pro({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  variable: "--font-readex",
+  display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  variable: "--font-fraunces",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  authors: [{ name: "LanguageZone" }],
-  robots: { index: true, follow: true },
-  icons: { icon: "/images/small_logo.png" },
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "German Language Course in Dehradun | A1 to C2 | Language Zone",
+    template: "%s | Language Zone",
+  },
+  description:
+    "Language Zone is a German language institute in Dehradun. Goethe-Zertifikat preparation from A1 to C2 with certified trainers, online and offline batches.",
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "education",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  icons: {
+    icon: "/images/small_logo.png",
+    apple: "/images/small_logo.png",
+  },
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: LOCALE,
+    url: SITE_URL,
+  },
+  twitter: { card: "summary_large_image" },
   other: {
-    locale: "dehradun_IN",
-    "geo.region": ",In-dehradun",
-    "geo.placename": ",Dehradun",
-    "geo.position": "30.29403265533804, 77.99704247140885",
-    ICBM: "30.29403265533804, 77.99704247140885",
-    classification: "education and training",
-    distribution: "local",
-    WebCrawlers: "All",
-    MSNBots: "All, FOLLOW",
-    "Googlebot-Image": "All",
-    BINGBots: "All, FOLLOW",
-    YAHOOBots: "All, FOLLOW",
-    GoogleBots: "All, FOLLOW",
-    copyright: "LanguageZone",
+    // local SEO: Dehradun, Uttarakhand (ISO 3166-2: IN-UT)
+    "geo.region": "IN-UT",
+    "geo.placename": "Dehradun",
+    "geo.position": `${GEO.lat};${GEO.lng}`,
+    ICBM: `${GEO.lat}, ${GEO.lng}`,
     "facebook-domain-verification": "d567zwhhdf2fxazfre00cozodaq801",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#14143a",
 };
 
 const FB_PIXEL = `!function(f,b,e,v,n,t,s)
@@ -57,21 +89,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en">
+    <html lang="en-IN" className={`${readex.variable} ${fraunces.variable}`}>
+      {/* Next adds the metadata tags (title, description, Open Graph, …) to this head.
+          GTM and the Meta Pixel sit as high in <head> as their vendors recommend. */}
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
+        {/* Google Tag Manager */}
+        <script id="gtm" dangerouslySetInnerHTML={{ __html: GTM }} />
+        {/* Meta Pixel */}
+        <script id="fb-pixel" dangerouslySetInnerHTML={{ __html: FB_PIXEL }} />
+        {/* AiSensy WhatsApp chat widget */}
+        <script
+          id="aisensy-wa-widget"
+          async
+          src="https://d3mkw6s8thqya7.cloudfront.net/integration-plugin.js"
+          {...{ "widget-id": "aaa3x3" }}
         />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Outfit&family=Readex+Pro:wght@200;400&display=swap"
-        />
+        {/* Site-wide structured data: LocalBusiness + WebSite */}
+        <JsonLd data={siteJsonLd()} />
       </head>
       <body>
+        {/* GTM noscript fallback: Google asks for it right after <body> opens.
+            The pixel's <img> fallback must also live in <body> (img isn't valid in head). */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-P5K43J4L"
@@ -90,24 +128,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
-        <TabNav />
-        <CoursesList />
         <Popup />
-        <SiteScripts />
-
-        <Script id="fb-pixel" strategy="afterInteractive">
-          {FB_PIXEL}
-        </Script>
-        <Script id="gtm" strategy="afterInteractive">
-          {GTM}
-        </Script>
-        {/* AiSensy Chat widget */}
-        <Script
-          id="aisensy-wa-widget"
-          src="https://d3mkw6s8thqya7.cloudfront.net/integration-plugin.js"
-          strategy="afterInteractive"
-          {...{ "widget-id": "aaa3x3" }}
-        />
       </body>
     </html>
   );
