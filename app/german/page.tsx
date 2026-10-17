@@ -5,6 +5,7 @@ import CallbackBand from "@/components/course/CallbackBand";
 import ExamTable from "@/components/course/ExamTable";
 import FaqSection from "@/components/course/FaqSection";
 import LevelCard from "@/components/course/LevelCard";
+import TrainerSection from "@/components/course/TrainerSection";
 import {
   Band,
   CardGrid,
@@ -60,9 +61,7 @@ export default function Page() {
         <PageTitle>{hero.title}</PageTitle>
         <Lead>{hero.lead}</Lead>
         <div className="mt-6.5 flex flex-wrap gap-3">
-          <EnquiryButton className="max-md:w-full">
-            Check your level
-          </EnquiryButton>
+          <EnquiryButton className="max-md:w-full">Enquire Now </EnquiryButton>
           <a
             href={`tel:${PHONE_PRIMARY.tel}`}
             className={cn(
@@ -92,7 +91,9 @@ export default function Page() {
         <ExamTable />
       </Band>
 
-      <FaqSection title="German course FAQs" items={faq} tinted={false} />
+      <TrainerSection />
+
+      <FaqSection title="German course FAQs" items={faq} />
 
       <CallbackBand />
     </main>

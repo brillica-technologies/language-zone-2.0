@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { MenuIcon } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import EnquiryButton from "@/components/EnquiryButton";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -133,15 +133,9 @@ export default function Header() {
             ))}
           </nav>
 
-          <Link
-            href="/contact-us"
-            className={cn(
-              buttonVariants({ variant: "gold", size: "pill" }),
-              "hidden lg:inline-flex",
-            )}
-          >
-            Check your level
-          </Link>
+          <EnquiryButton className="hidden lg:inline-flex">
+            Enquire Now
+          </EnquiryButton>
 
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger

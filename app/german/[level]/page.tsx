@@ -5,6 +5,7 @@ import EnquiryButton from "@/components/EnquiryButton";
 import JsonLd from "@/components/JsonLd";
 import CallbackBand from "@/components/course/CallbackBand";
 import FaqSection from "@/components/course/FaqSection";
+import TrainerSection from "@/components/course/TrainerSection";
 import {
   Band,
   CardGrid,
@@ -237,12 +238,18 @@ export default async function Page({ params }: PageProps<"/german/[level]">) {
         </CardGrid>
       </Band>
 
+      <TrainerSection
+        tone="paper"
+        title={`Your German ${level.code} trainer`}
+      />
+
       <FaqSection
         title={`German ${level.code} course FAQs`}
         items={level.faq}
+        tinted={false}
       />
 
-      <Band>
+      <Band tone="paper">
         <nav
           aria-label="Neighbouring levels"
           className="grid gap-3.5 md:grid-cols-2 md:gap-6"

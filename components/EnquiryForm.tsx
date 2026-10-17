@@ -13,10 +13,11 @@ import {
   resendOtp,
   sendOtp,
   submitEnquiry,
+  submitForSyllabus,
   toContactNo,
 } from "@/lib/enquiry";
-import { GERMAN_LEVELS, PHONE_PRIMARY, levelLabel } from "@/lib/site";
-import { CheckIcon, ChevronDownIcon } from "lucide-react";
+import { GERMAN_LEVELS, levelLabel } from "@/lib/site";
+import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,12 +36,6 @@ export const COURSE_OPTIONS = [
 type Field = "name" | "phone" | "otp" | "email" | "course";
 type Errors = Partial<Record<Field, string>>;
 
-declare global {
-  interface Window {
-    dataLayer?: object[];
-  }
-}
-
 export type EnquiryFormProps = {
   title?: string;
   subtitle?: string;
@@ -52,6 +47,8 @@ export type EnquiryFormProps = {
   /** added to the lead message, e.g. "Download curriculum request" */
   context?: string;
   submitLabel?: string;
+  /** after a verified submit, the thank-you page downloads the syllabus PDF */
+  downloadSyllabus?: boolean;
   className?: string;
   onSuccess?: () => void;
 };
@@ -65,6 +62,7 @@ export default function EnquiryForm({
   showMessage = false,
   context,
   submitLabel = "Submit",
+  downloadSyllabus = false,
   className = "",
   onSuccess,
 }: EnquiryFormProps) {
@@ -88,7 +86,6 @@ export default function EnquiryForm({
   const [cooldown, setCooldown] = useState(0);
   const [sending, setSending] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
 
   const dial = countries.find((c) => c.code === country)?.dial ?? "91";
   const contactNo = toContactNo(phone, country);
@@ -204,73 +201,34 @@ export default function EnquiryForm({
     if (!ok) return;
 
     setSubmitting(true);
-    const res = await submitEnquiry({
+    const payload = {
       name: name.trim(),
       email: email.trim(),
       contactNo,
       message: buildMessage(),
       otp,
-    });
-    setSubmitting(false);
+    };
+    const res = downloadSyllabus
+      ? await submitForSyllabus(payload)
+      : await submitEnquiry(payload);
     if (!res.ok) {
+      setSubmitting(false);
       const text = res.message || "Something went wrong. Please try again.";
       if (/otp/i.test(text)) setErrors((er) => ({ ...er, otp: text }));
       else setNotice({ ok: false, text });
       return;
     }
-    window.dataLayer?.push({ event: "lz_enquiry_submitted" });
-    setDone(true);
     onSuccess?.();
-  }
-
-  function reset() {
-    setName("");
-    setPhone("");
-    setOtp("");
-    setEmail("");
-    setPicked(defaultCourse);
-    setMessage("");
-    setOtpFor("");
-    setErrors({});
-    setNotice(null);
-    setDone(false);
-  }
-
-  if (done) {
-    return (
-      <div
-        role="status"
-        className={cn(
-          "flex flex-col items-center gap-2.5 py-5 text-center",
-          className,
-        )}
-      >
-        <span className="flex size-14 items-center justify-center rounded-full bg-gold text-ink">
-          <CheckIcon className="size-7" strokeWidth={3} aria-hidden="true" />
-        </span>
-        <h3 className="font-disp text-[26px] text-navy">
-          Thank you, {name.trim().split(" ")[0]}!
-        </h3>
-        <p className="max-w-95 text-mute">
-          Your enquiry is in. A trainer will call you on +{dial} {phone}{" "}
-          shortly. For anything urgent, call{" "}
-          <a
-            className="text-indigo underline"
-            href={`tel:${PHONE_PRIMARY.tel}`}
-          >
-            {PHONE_PRIMARY.label}
-          </a>
-          .
-        </p>
-        <Button
-          variant="link"
-          className="text-base text-indigo"
-          onClick={reset}
-        >
-          Send another enquiry
-        </Button>
-      </div>
-    );
+    // Full page load (not client navigation) so GTM and the Facebook pixel record a
+    // page view of /thank-you; that page also pushes the "lz_lead" event.
+    const params = new URLSearchParams({
+      for: downloadSyllabus ? "syllabus" : "enquiry",
+    });
+    if ("token" in res && typeof res.token === "string")
+      params.set("token", res.token);
+    // the button stays disabled ("Submitting…") while the browser navigates
+    // eslint-disable-next-line @next/next/no-location-assign-relative-destination -- full load is intended
+    window.location.assign(`/thank-you?${params}`);
   }
 
   const aria = (f: Field) => ({

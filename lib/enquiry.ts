@@ -109,3 +109,36 @@ export function submitEnquiry(data: {
 }) {
   return post("/api/enquiry/lp", data);
 }
+
+/**
+ * Submit an enquiry through our own /api/syllabus route, which verifies it with the
+ * CRM and returns a short-lived token; the thank-you page uses it to download the PDF.
+ */
+export async function submitForSyllabus(data: {
+  name: string;
+  email: string;
+  contactNo: string;
+  message: string;
+  otp: string;
+}): Promise<{ ok: boolean; message: string; token?: string | null }> {
+  try {
+    const res = await fetch("/api/syllabus", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    const body = await res.json().catch(() => null);
+    return {
+      ok: res.ok,
+      message: body?.message ?? "",
+      token: body?.token ?? null,
+    };
+  } catch (err) {
+    console.error("Syllabus enquiry error:", err);
+    return {
+      ok: false,
+      message:
+        "Could not reach the server. Check your connection and try again.",
+    };
+  }
+}
