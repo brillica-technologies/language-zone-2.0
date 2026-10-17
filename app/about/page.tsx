@@ -1,7 +1,7 @@
-/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import JsonLd from "@/components/JsonLd";
 import CallbackBand from "@/components/course/CallbackBand";
+import TrainerSection from "@/components/course/TrainerSection";
 import {
   Band,
   CardGrid,
@@ -14,15 +14,12 @@ import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import about from "@/data/about.json";
 import { MAP_EMBED } from "@/lib/location";
+import { TRAINERS } from "@/lib/trainers";
 import { ADDRESS, MAP_LINK, PHONE_PRIMARY, PHONE_SECONDARY } from "@/lib/site";
 import { ORG_ID, absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
-/** A trainer card; add entries to data/about.json → team.trainers to show the section. */
-type Trainer = { name: string; role: string; bio: string; photo?: string };
-
 const { seo, hero, story, principles, team, visit } = about;
-const trainers: Trainer[] = team.trainers;
 const PATH = "/about";
 const card = "rounded-[20px] p-5 text-base ring-line md:p-7";
 
@@ -102,32 +99,10 @@ export default function Page() {
         </CardGrid>
       </Band>
 
-      {trainers.length > 0 && (
-        <Band>
-          <SectionHead eyebrow={team.eyebrow} title={team.title} />
-          <CardGrid as="ul">
-            {trainers.map((t) => (
-              <li key={t.name}>
-                <Card className={cn(card, "h-full gap-0")}>
-                  {t.photo && (
-                    <img
-                      src={t.photo}
-                      alt={t.name}
-                      className="mb-4 aspect-square w-24 rounded-2xl object-cover"
-                    />
-                  )}
-                  <h3 className="text-[19px] font-semibold">{t.name}</h3>
-                  <p className="text-sm font-medium text-indigo">{t.role}</p>
-                  <p className="mt-1.5 text-mute">{t.bio}</p>
-                </Card>
-              </li>
-            ))}
-          </CardGrid>
-        </Band>
-      )}
+      <TrainerSection eyebrow={team.eyebrow} title={team.title} />
 
       <Band
-        tone={trainers.length > 0 ? "paper" : "white"}
+        tone={TRAINERS.length > 0 ? "paper" : "white"}
         className="flex flex-wrap items-center gap-7 md:gap-14"
       >
         <div className="min-w-0 flex-[1_1_480px]">

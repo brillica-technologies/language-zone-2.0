@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EnquiryButton from "@/components/EnquiryButton";
 import CallbackBand from "@/components/course/CallbackBand";
 import ExamTable from "@/components/course/ExamTable";
 import FaqSection from "@/components/course/FaqSection";
@@ -52,15 +53,9 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
               certificate that universities, employers and embassies recognise.
             </Lead>
             <div className="mt-6.5 flex flex-wrap gap-3">
-              <Link
-                href="/contact-us"
-                className={cn(
-                  buttonVariants({ variant: "gold", size: "pill" }),
-                  "max-md:w-full",
-                )}
-              >
-                Check your level
-              </Link>
+              <EnquiryButton className="max-md:w-full">
+                Enquire Now
+              </EnquiryButton>
               <Link
                 href={GERMAN_COURSE_URL}
                 className={cn(

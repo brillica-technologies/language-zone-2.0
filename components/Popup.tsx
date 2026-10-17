@@ -45,12 +45,12 @@ const VARIANTS: Record<
     context: "Enrol request",
   },
   curriculum: {
-    eyebrow: "Course curriculum",
-    title: "Get the full syllabus",
-    text: "Verify your number and a trainer will share the detailed curriculum with you.",
-    formTitle: "Get the curriculum",
-    submit: "Get the curriculum",
-    context: "Download curriculum request",
+    eyebrow: "Course syllabus",
+    title: "Download the German syllabus",
+    text: "Verify your WhatsApp number and the syllabus PDF downloads straight away.",
+    formTitle: "Download the syllabus",
+    submit: "Download syllabus",
+    context: "Syllabus download",
   },
 };
 
@@ -145,6 +145,7 @@ export default function Popup() {
               showMessage={current === "query"}
               context={v.context}
               submitLabel={v.submit}
+              downloadSyllabus={current === "curriculum"}
             />
           </div>
         </DialogContent>
