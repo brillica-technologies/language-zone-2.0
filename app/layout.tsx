@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import { Fraunces, Readex_Pro } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -91,8 +90,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en-IN" className={`${readex.variable} ${fraunces.variable}`}>
-      <body>
+      {/* Next adds the metadata tags (title, description, Open Graph, …) to this head.
+          GTM and the Meta Pixel sit as high in <head> as their vendors recommend. */}
+      <head>
+        {/* Google Tag Manager */}
+        <script id="gtm" dangerouslySetInnerHTML={{ __html: GTM }} />
+        {/* Meta Pixel */}
+        <script id="fb-pixel" dangerouslySetInnerHTML={{ __html: FB_PIXEL }} />
+        {/* AiSensy WhatsApp chat widget */}
+        <script
+          id="aisensy-wa-widget"
+          async
+          src="https://d3mkw6s8thqya7.cloudfront.net/integration-plugin.js"
+          {...{ "widget-id": "aaa3x3" }}
+        />
+        {/* Site-wide structured data: LocalBusiness + WebSite */}
         <JsonLd data={siteJsonLd()} />
+      </head>
+      <body>
+        {/* GTM noscript fallback: Google asks for it right after <body> opens.
+            The pixel's <img> fallback must also live in <body> (img isn't valid in head). */}
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-P5K43J4L"
@@ -112,20 +129,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {children}
         <Footer />
         <Popup />
-
-        <Script id="fb-pixel" strategy="afterInteractive">
-          {FB_PIXEL}
-        </Script>
-        <Script id="gtm" strategy="afterInteractive">
-          {GTM}
-        </Script>
-        {/* AiSensy Chat widget */}
-        <Script
-          id="aisensy-wa-widget"
-          src="https://d3mkw6s8thqya7.cloudfront.net/integration-plugin.js"
-          strategy="afterInteractive"
-          {...{ "widget-id": "aaa3x3" }}
-        />
       </body>
     </html>
   );
