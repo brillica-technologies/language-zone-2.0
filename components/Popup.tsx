@@ -142,7 +142,6 @@ export default function Popup() {
               title={v.formTitle}
               subtitle="We usually call back within a few working hours."
               defaultCourse={course ?? courseFor(pathname)}
-              showMessage={current === "query"}
               context={v.context}
               submitLabel={v.submit}
               downloadSyllabus={current === "curriculum"}

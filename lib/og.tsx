@@ -12,7 +12,7 @@ const RED = "#d02020";
 
 async function logo() {
   const file = await readFile(
-    join(process.cwd(), "public/images/language zone white logo .png"),
+    join(process.cwd(), "public/images/logo-white.png"),
   );
   return `data:image/png;base64,${file.toString("base64")}`;
 }
@@ -113,7 +113,7 @@ export async function ogCard({
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
-          <img src={src} height={64} />
+          <img src={src} height={76} />
           <div style={{ display: "flex", fontSize: 26, color: "#c9ccee" }}>
             languagezone.in · Race Course, Dehradun
           </div>

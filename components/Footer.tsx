@@ -62,8 +62,8 @@ export default function Footer() {
           <div className="min-w-0 flex-[2_1_280px]">
             <Link href="/" aria-label="Language Zone, home">
               <img
-                className="h-[46px] w-auto"
-                src="/images/language zone white logo .png"
+                className="h-[56px] w-auto"
+                src="/images/logo-white.png"
                 alt="Language Zone"
               />
             </Link>

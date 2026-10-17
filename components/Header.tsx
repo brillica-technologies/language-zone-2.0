@@ -80,7 +80,7 @@ export default function Header() {
             <img
               src="/images/logo.png"
               alt="Language Zone"
-              className="h-[38px] w-auto lg:h-[46px]"
+              className="h-[42px] w-auto lg:h-[54px]"
             />
           </Link>
 

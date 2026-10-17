@@ -102,7 +102,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           id="aisensy-wa-widget"
           async
           src="https://d3mkw6s8thqya7.cloudfront.net/integration-plugin.js"
-          {...{ "widget-id": "aaa3x3" }}
+          {...{ "widget-id": "aab6n7" }}
         />
         {/* Site-wide structured data: LocalBusiness + WebSite */}
         <JsonLd data={siteJsonLd()} />

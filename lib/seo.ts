@@ -108,8 +108,8 @@ export function siteJsonLd() {
         logo: {
           "@type": "ImageObject",
           url: absoluteUrl("/images/logo.png"),
-          width: 703,
-          height: 184,
+          width: 968,
+          height: 280,
         },
         image: absoluteUrl("/opengraph-image"),
         telephone: e164(PHONE_PRIMARY.tel),
