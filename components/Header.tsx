@@ -65,7 +65,7 @@ export default function Header() {
       <div className="tri-stripe" />
       <div className="hidden bg-ink text-sm text-white lg:block">
         <div className="page-wrap flex justify-between gap-4 py-2">
-          <span>Race Course, Dehradun, Uttarakhand 248001</span>
+          <span>Near Dwarka Store, EC Road, Race Course, Dehradun, Uttarakhand 248001</span>
           <span className="flex gap-6">
             <a href={`tel:${PHONE_PRIMARY.tel}`}>{PHONE_PRIMARY.label}</a>
             <a href={`tel:${PHONE_SECONDARY.tel}`}>{PHONE_SECONDARY.label}</a>

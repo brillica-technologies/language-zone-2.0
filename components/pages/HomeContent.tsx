@@ -32,7 +32,7 @@ const LADDER = [
 const TRUST = [
   "Goethe-Zertifikat preparation",
   "Online and offline batches",
-  "Race Course, Dehradun",
+  "Near Dwarka Store, EC Road, Race Course, Dehradun",
 ];
 
 const card = "rounded-[20px] p-5 text-base ring-line md:p-7";
@@ -48,9 +48,11 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
               German Language Course in Dehradun
             </h1>
             <Lead>
-              Learn German from A1 to C2 with certified trainers. Every level
-              follows its Goethe-Zertifikat, so your classes end with a
-              certificate that universities, employers and embassies recognise.
+              Learn German with a German language course in Dehradun at Language
+              Zone. Our German classes in Dehradun cover levels A1 to C2 with
+              certified trainers. Each level prepares you for the
+              Goethe-Zertifikat, helping you earn a recognised certificate
+              accepted by universities, employers, and embassies.
             </Lead>
             <div className="mt-6.5 flex flex-wrap gap-3">
               <EnquiryButton className="max-md:w-full">
@@ -116,7 +118,7 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
         <SectionHead
           eyebrow="Courses"
           title="Choose your German level"
-          lead="Six courses, one for every stage of your German. Open a level to see the syllabus, the exam and who it suits."
+          lead="Explore German language classes in Dehradun with six courses designed for every stage of your learning journey, from A1 to C2. Open a level to discover its syllabus, exam details, and who it is best suited for."
         />
         <CardGrid min="360px">
           {GERMAN_LEVELS.map((l) => (
@@ -196,14 +198,16 @@ export default function HomeContent({ posts }: { posts: Post[] }) {
         <div className="min-w-0 flex-[1_1_440px]">
           <SectionHead
             eyebrow="About"
-            title="A German language institute built around your goal"
+            title="German Language Institute in Dehradun Built Around Your Goals"
           />
           <p className="text-[17px] text-mute">
-            Language Zone is a German language institute in Dehradun, run by
-            Brillica Services. Our certified trainers prepare students, job
-            seekers and working professionals for the Goethe-Zertifikat at every
-            level, with a communicative approach that gets you speaking from the
-            first class.
+            Language Zone is a trusted German Language Institute in Dehradun,
+            run by Brillica Services. We provide professional German Language
+            Training in Dehradun for students, job seekers, and working
+            professionals. Our certified trainers prepare learners for the
+            Goethe-Zertifikat exams at every level, using a practical,
+            communicative approach that helps you start speaking German from
+            your very first class.
           </p>
           <Link
             href="/about"
