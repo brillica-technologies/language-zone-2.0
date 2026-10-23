@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 import { ADDRESS, MAP_LINK } from "@/lib/location";
 import { EMAIL, PHONE_PRIMARY, PHONE_SECONDARY } from "@/lib/site";
 
-export const SITE_URL = "https://languagezone.in";
+export const SITE_URL = "https://www.languagezone.in";
 export const SITE_NAME = "Language Zone";
 export const LOCALE = "en_IN";
 
