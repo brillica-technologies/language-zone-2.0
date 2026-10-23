@@ -8,7 +8,7 @@ const PATH = "/contact-us";
 export const metadata: Metadata = pageMetadata({
   title: "Contact Language Zone | German Classes in Dehradun",
   description:
-    "Contact Language Zone at Race Course, Dehradun, for German classes from A1 to C2. Call, WhatsApp or send an enquiry for a level check and batch dates.",
+    "Contact Language Zone at Near Dwarka Store, EC Road, Race Course Dehradun, for German classes from A1 to C2. Call, WhatsApp or send an enquiry for a level check and batch dates.",
   keywords: [
     "contact Language Zone",
     "German classes in Dehradun contact",

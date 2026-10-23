@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata: Metadata = pageMetadata({
   title: "German Language Course in Dehradun (A1–C2) | Language Zone",
   description:
-    "Learn German in Dehradun at Language Zone: Goethe-Zertifikat courses from A1 to C2, certified trainers, online and offline batches at Race Course.",
+    "Looking for a German Language Course in Dehradun? Join Language Zone for Goethe-Zertifikat preparation from A1 to C2, with expert trainers and online and offline classes.",
   keywords: [
     "German language course in Dehradun",
     "German classes in Dehradun",
