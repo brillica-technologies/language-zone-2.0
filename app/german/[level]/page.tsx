@@ -94,7 +94,7 @@ export default async function Page({ params }: PageProps<"/german/[level]">) {
           courseMode: "Onsite",
           location: {
             "@type": "Place",
-            name: "Language Zone, Race Course, Dehradun",
+            name: "Language Zone, Near Dwarka Store, EC Road, Race Course, Dehradun",
             address: ADDRESS,
           },
         },

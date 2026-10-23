@@ -115,7 +115,7 @@ export async function ogCard({
           {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
           <img src={src} height={76} />
           <div style={{ display: "flex", fontSize: 26, color: "#c9ccee" }}>
-            languagezone.in · Race Course, Dehradun
+            languagezone.in · Near Dwarka Store, EC Road, Race Course, Dehradun
           </div>
         </div>
       </div>

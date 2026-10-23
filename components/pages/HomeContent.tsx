@@ -32,7 +32,7 @@ const LADDER = [
 const TRUST = [
   "Goethe-Zertifikat preparation",
   "Online and offline batches",
-  "Race Course, Dehradun",
+  "Near Dwarka Store, EC Road, Race Course, Dehradun",
 ];
 
 const card = "rounded-[20px] p-5 text-base ring-line md:p-7";
