@@ -85,7 +85,7 @@ const GTM = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-P5K43J4L');`;
+})(window,document,'script','dataLayer','GTM-56C2GZTF');`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -112,7 +112,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             The pixel's <img> fallback must also live in <body> (img isn't valid in head). */}
         <noscript>
           <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-P5K43J4L"
+            src="https://www.googletagmanager.com/ns.html?id=GTM-56C2GZTF"
             height="0"
             width="0"
             style={{ display: "none", visibility: "hidden" }}
