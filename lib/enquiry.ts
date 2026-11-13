@@ -53,8 +53,14 @@ function findSource() {
   ]) {
     if (ref.includes(s) || utm?.includes(s)) return s;
   }
+
+  if(utm === "google"){
+    return "googleAds";
+  }
+
   return utm || "organic";
 }
+
 
 type ApiResult = { ok: boolean; message: string };
 
