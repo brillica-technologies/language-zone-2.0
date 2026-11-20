@@ -20,8 +20,11 @@ export const metadata: Metadata = pageMetadata({
   path: "/",
 });
 
-export default function Page() {
-  const posts = getPosts().slice(0, 3);
+// Refresh the latest-guides strip when new CMS blogs are published
+export const revalidate = 3600;
+
+export default async function Page() {
+  const posts = (await getPosts()).slice(0, 3);
   return (
     <>
       <HomeContent posts={posts} />

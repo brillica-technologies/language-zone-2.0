@@ -2,18 +2,21 @@ import type { Metadata } from "next";
 import CallbackBand from "@/components/course/CallbackBand";
 import {
   Band,
-  CardGrid,
   Lead,
   PageHero,
   PageTitle,
 } from "@/components/course/Section";
 import BlogEmpty from "@/components/blog/BlogEmpty";
+import BlogFilter from "@/components/blog/BlogFilter";
 import PostCard from "@/components/blog/PostCard";
 import JsonLd from "@/components/JsonLd";
-import { getPosts, postUrl } from "@/lib/blog";
+import { categorySlug, getCategories, getPosts, postUrl } from "@/lib/blog";
 import { ORG_ID, absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 
 const PATH = "/blogs";
+
+// CMS blogs published for Language Zone show up within the hour, no deploy needed
+export const revalidate = 3600;
 
 export const metadata: Metadata = pageMetadata({
   title: "German Learning Blog & Goethe Exam Tips | Language Zone",
@@ -30,8 +33,9 @@ export const metadata: Metadata = pageMetadata({
   path: PATH,
 });
 
-export default function BlogPage() {
-  const posts = getPosts();
+export default async function BlogPage() {
+  const posts = await getPosts();
+  const categories = await getCategories(posts);
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -46,6 +50,7 @@ export default function BlogPage() {
         headline: p.title,
         url: absoluteUrl(postUrl(p.slug)),
         datePublished: p.date,
+        dateModified: p.updated,
       })),
     },
     breadcrumbJsonLd([
@@ -69,11 +74,14 @@ export default function BlogPage() {
         {posts.length === 0 ? (
           <BlogEmpty />
         ) : (
-          <CardGrid min="320px">
-            {posts.map((post) => (
-              <PostCard key={post.slug} post={post} />
-            ))}
-          </CardGrid>
+          <BlogFilter
+            categories={categories}
+            items={posts.map((post) => ({
+              key: post.slug,
+              category: categorySlug(post.category),
+              card: <PostCard post={post} />,
+            }))}
+          />
         )}
       </Band>
 

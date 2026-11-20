@@ -12,21 +12,29 @@ import {
   PageTitle,
   SectionHead,
 } from "@/components/course/Section";
-import { formatDate, getPost, getPosts, postUrl } from "@/lib/blog";
+import {
+  formatDate,
+  getPost,
+  getPosts,
+  postUrl,
+  postWordCount,
+} from "@/lib/blog";
 import { ORG_ID, absoluteUrl, breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { GERMAN_LEVELS } from "@/lib/site";
 
-// Posts come from data/blog/posts.json; unknown slugs are a 404.
-export const dynamicParams = false;
+// Posts come from the CMS and data/blog/posts.json (lib/blog.ts). Known posts are
+// built ahead; a blog published in the CMS later is rendered on its first visit,
+// and every page refreshes hourly. Unknown slugs are a 404.
+export const revalidate = 3600;
 
-export function generateStaticParams() {
-  return getPosts().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getPosts()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps<"/blogs/[slug]">): Promise<Metadata> {
-  const post = getPost((await params).slug);
+  const post = await getPost((await params).slug);
   if (!post) return {};
   return {
     ...pageMetadata({
@@ -36,11 +44,12 @@ export async function generateMetadata({
       path: postUrl(post.slug),
       type: "article",
       publishedTime: post.date,
-      modifiedTime: post.date,
+      modifiedTime: post.updated,
       section: post.category,
       authors: [post.author],
-      image: `${postUrl(post.slug)}/opengraph-image`,
-      imageAlt: post.title,
+      // the CMS banner when there is one, else the generated card
+      image: post.image?.src ?? `${postUrl(post.slug)}/opengraph-image`,
+      imageAlt: post.image?.alt ?? post.title,
     }),
     authors: [{ name: post.author }],
   };
@@ -49,18 +58,14 @@ export async function generateMetadata({
 export default async function BlogPostPage({
   params,
 }: PageProps<"/blogs/[slug]">) {
-  const post = getPost((await params).slug);
+  const post = await getPost((await params).slug);
   if (!post) notFound();
 
   const url = absoluteUrl(postUrl(post.slug));
-  const more = getPosts()
+  const more = (await getPosts())
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3);
 
-  const words = post.content
-    .flatMap((b) => (b.type === "ul" ? b.items : [b.text]))
-    .join(" ")
-    .split(/\s+/).length;
 
   const jsonLd = [
     {
@@ -74,10 +79,10 @@ export default async function BlogPostPage({
       keywords: post.seo.keywords,
       articleSection: post.category,
       inLanguage: "en-IN",
-      wordCount: words,
+      wordCount: postWordCount(post),
       datePublished: post.date,
-      dateModified: post.date,
-      image: `${url}/opengraph-image`,
+      dateModified: post.updated,
+      image: post.image?.src ?? `${url}/opengraph-image`,
       author: {
         "@type": "Organization",
         name: post.author,
@@ -115,7 +120,16 @@ export default async function BlogPostPage({
 
       <Band narrow>
         <article>
-          <ArticleBody blocks={post.content} />
+          {post.image && (
+            // CMS banner images live on the CMS CDN; a plain img keeps that host out of next.config
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={post.image.src}
+              alt={post.image.alt}
+              className="mb-8 aspect-video w-full rounded-[20px] object-cover"
+            />
+          )}
+          <ArticleBody body={post.body} />
         </article>
       </Band>
 
