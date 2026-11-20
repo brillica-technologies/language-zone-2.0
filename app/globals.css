@@ -156,3 +156,63 @@
 body:has([data-slot="dialog-content"], [data-slot="sheet-content"]) .df-btn {
   display: none !important;
 }
+
+/* Blog posts from the CMS arrive as editor HTML; match the look of ArticleBody's blocks. */
+@layer components {
+  .article-html {
+    @apply text-[17px] leading-relaxed text-mute md:text-lg;
+    overflow-wrap: anywhere;
+  }
+  .article-html > :first-child {
+    @apply mt-0;
+  }
+  .article-html :where(p) {
+    @apply mt-4.5;
+  }
+  .article-html :where(h1, h2) {
+    @apply mt-10 mb-3 font-disp text-[24px] leading-tight text-ink md:text-[28px];
+  }
+  .article-html :where(h3) {
+    @apply mt-8 mb-2 font-disp text-[20px] leading-tight text-ink md:text-[22px];
+  }
+  .article-html :where(h4, h5, h6) {
+    @apply mt-6 mb-2 font-semibold text-ink;
+  }
+  .article-html :where(ul, ol) {
+    @apply mt-4 space-y-2.5 pl-6;
+  }
+  .article-html :where(ul) {
+    @apply list-disc marker:text-brand-red;
+  }
+  .article-html :where(ol) {
+    @apply list-decimal marker:font-semibold marker:text-navy;
+  }
+  .article-html :where(a) {
+    @apply font-medium text-indigo underline underline-offset-2;
+  }
+  .article-html :where(strong, b) {
+    @apply font-semibold text-ink;
+  }
+  .article-html :where(img, video, iframe) {
+    @apply my-6 h-auto max-w-full rounded-2xl;
+  }
+  .article-html :where(blockquote) {
+    @apply mt-6 border-l-4 border-gold bg-paper py-3 pr-4 pl-5 text-ink italic;
+  }
+  .article-html :where(hr) {
+    @apply my-10 border-line;
+  }
+  .article-html :where(table) {
+    /* the CMS editor writes fixed inline widths; wide tables scroll inside the article */
+    @apply mt-6 block max-w-full overflow-x-auto border-collapse text-base;
+  }
+  .article-html :where(th, td) {
+    @apply border border-line px-3 py-2 text-left align-top;
+  }
+  .article-html :where(th) {
+    @apply bg-tint font-semibold text-ink;
+  }
+  .article-html :where(code) {
+    @apply rounded bg-paper px-1.5 py-0.5 text-[0.9em];
+  }
+}

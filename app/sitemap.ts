@@ -4,9 +4,11 @@ import { absoluteUrl } from "@/lib/seo";
 import { GERMAN_COURSE_URL, GERMAN_LEVELS, levelUrl } from "@/lib/site";
 
 // Every public route. Static pages carry the build date; posts carry their own date.
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const built = new Date();
-  const posts = getPosts();
+  const posts = await getPosts();
   const latestPost = posts[0]?.date ?? built;
 
   return [
@@ -48,7 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...posts.map((p) => ({
       url: absoluteUrl(postUrl(p.slug)),
-      lastModified: p.date,
+      lastModified: p.updated,
       changeFrequency: "yearly" as const,
       priority: 0.6,
     })),

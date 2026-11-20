@@ -5,8 +5,10 @@ export const alt = "German learning guide from Language Zone, Dehradun";
 export const size = OG_SIZE;
 export const contentType = "image/png";
 
-export function generateStaticParams() {
-  return getPosts().map((p) => ({ slug: p.slug }));
+export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  return (await getPosts()).map((p) => ({ slug: p.slug }));
 }
 
 export default async function Image({
@@ -14,7 +16,7 @@ export default async function Image({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const post = getPost((await params).slug);
+  const post = await getPost((await params).slug);
   return ogCard({
     eyebrow: post
       ? `${post.category} · Language Zone blog`

@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import Link from "next/link";
-import type { Block } from "@/lib/blog";
+import type { Block, PostBody } from "@/lib/blog";
 
 const LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
 
@@ -29,8 +29,23 @@ function Inline({ text }: { text: string }) {
   return parts.map((p, i) => <Fragment key={i}>{p}</Fragment>);
 }
 
-/** The post body: h2 / paragraph / bullet list blocks from the JSON. */
-export default function ArticleBody({ blocks }: { blocks: Block[] }) {
+/**
+ * The post body: HTML from the CMS editor, or the h2 / paragraph / bullet list
+ * blocks of the older posts in data/blog/posts.json.
+ */
+export default function ArticleBody({ body }: { body: PostBody }) {
+  if (body.kind === "html")
+    return (
+      <div
+        className="article-html"
+        // Written by our own team in the BSPL CMS, which cleans it on save
+        dangerouslySetInnerHTML={{ __html: body.html }}
+      />
+    );
+  return <BlockBody blocks={body.blocks} />;
+}
+
+function BlockBody({ blocks }: { blocks: Block[] }) {
   return (
     <div className="text-[17px] leading-relaxed text-mute md:text-lg">
       {blocks.map((b, i) => {
